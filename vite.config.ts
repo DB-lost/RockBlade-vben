@@ -16,11 +16,11 @@ export default defineApplicationConfig({
     },
     server: {
       proxy: {
-        '/basic-api': {
-          target: 'http://localhost:3000',
+        '/RockBlade-System': {
+          target: 'http://localhost:8080/RockBlade-System',
           changeOrigin: true,
           ws: true,
-          rewrite: (path) => path.replace(new RegExp(`^/basic-api`), ''),
+          rewrite: (path) => path.replace(new RegExp(`^/RockBlade-System`), ''),
           // only https
           // secure: false
         },

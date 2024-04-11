@@ -51,9 +51,9 @@ export const columns: BasicColumn[] = [
   },
 ];
 
-const isDir = (type: string) => type === '0';
-const isMenu = (type: string) => type === '1';
-const isButton = (type: string) => type === '2';
+const isDir = (type: number) => type === 0;
+const isMenu = (type: number) => type === 1;
+const isButton = (type: number) => type === 2;
 
 export const searchFormSchema: FormSchema[] = [
   {
@@ -78,6 +78,12 @@ export const searchFormSchema: FormSchema[] = [
 
 export const formSchema: FormSchema[] = [
   {
+    field: 'id',
+    label: 'id',
+    component: 'Input',
+    show: false,
+  },
+  {
     field: 'type',
     label: '菜单类型',
     component: 'RadioButtonGroup',
@@ -97,7 +103,6 @@ export const formSchema: FormSchema[] = [
     component: 'Input',
     required: true,
   },
-
   {
     field: 'parentMenu',
     label: '上级菜单',
@@ -110,7 +115,6 @@ export const formSchema: FormSchema[] = [
       getPopupContainer: () => document.body,
     },
   },
-
   {
     field: 'orderNo',
     label: '排序',
@@ -156,20 +160,21 @@ export const formSchema: FormSchema[] = [
       ],
     },
   },
-  {
+  /*{
     field: 'isExt',
     label: '是否外链',
     component: 'RadioButtonGroup',
-    defaultValue: false,
+    defaultValue: '0',
     componentProps: {
       options: [
-        { label: '否', value: false },
-        { label: '是', value: true },
+        { label: '否', value: '0' },
+        { label: '是', value: '1' },
       ],
     },
     ifShow: ({ values }) => !isButton(values.type),
   },
 
+  */
   {
     field: 'ignoreKeepAlive',
     label: '是否缓存',
@@ -177,22 +182,21 @@ export const formSchema: FormSchema[] = [
     defaultValue: false,
     componentProps: {
       options: [
-        { label: '否', value: true },
         { label: '是', value: false },
+        { label: '否', value: true },
       ],
     },
     ifShow: ({ values }) => isMenu(values.type),
   },
-
   {
-    field: 'show',
-    label: '是否显示',
+    field: 'hideMenu',
+    label: '是否隐藏',
     component: 'RadioButtonGroup',
-    defaultValue: true,
+    defaultValue: false,
     componentProps: {
       options: [
-        { label: '是', value: true },
         { label: '否', value: false },
+        { label: '是', value: true },
       ],
     },
     ifShow: ({ values }) => !isButton(values.type),

@@ -12,7 +12,7 @@
         <BasicTree
           v-model:value="model[field]"
           :treeData="treeData"
-          :fieldNames="{ title: 'menuName', key: 'id' }"
+          :fieldNames="{ title: 'title', key: 'id' }"
           checkable
           toolbar
           title="菜单分配"
@@ -24,11 +24,11 @@
 <script lang="ts" setup>
   import { ref, computed, unref } from 'vue';
   import { BasicForm, useForm } from '@/components/Form';
-  import { formSchema } from './role.data';
+  import { formSchema } from '../role.data';
   import { BasicDrawer, useDrawerInner } from '@/components/Drawer';
   import { BasicTree, TreeItem } from '@/components/Tree';
-
-  import { getMenuList } from '@/api/demo/system';
+  import { getMenuTreeList, insertRole, updateRole } from '@/api/system/role';
+  import { useMessage } from '@/hooks/web/useMessage';
 
   const emit = defineEmits(['success', 'register']);
   const isUpdate = ref(true);
@@ -42,16 +42,16 @@
   });
 
   const [registerDrawer, { setDrawerProps, closeDrawer }] = useDrawerInner(async (data) => {
-    resetFields();
+    await resetFields();
     setDrawerProps({ confirmLoading: false });
     // 需要在setFieldsValue之前先填充treeData，否则Tree组件可能会报key not exist警告
     if (unref(treeData).length === 0) {
-      treeData.value = (await getMenuList()) as any as TreeItem[];
+      treeData.value = (await getMenuTreeList()) as any as TreeItem[];
     }
     isUpdate.value = !!data?.isUpdate;
 
     if (unref(isUpdate)) {
-      setFieldsValue({
+      await setFieldsValue({
         ...data.record,
       });
     }
@@ -59,12 +59,23 @@
 
   const getTitle = computed(() => (!unref(isUpdate) ? '新增角色' : '编辑角色'));
 
+  const { createMessage } = useMessage();
+
   async function handleSubmit() {
     try {
       const values = await validate();
       setDrawerProps({ confirmLoading: true });
-      // TODO custom api
-      console.log(values);
+      //修改
+      if (unref(isUpdate)) {
+        await updateRole(values).then(() => {
+          createMessage.success('修改角色成功!');
+        });
+      } else {
+        //新增
+        await insertRole(values).then(() => {
+          createMessage.success('新增角色成功!');
+        });
+      }
       closeDrawer();
       emit('success');
     } finally {

@@ -1,24 +1,17 @@
 <template>
-  <BasicDrawer
-    v-bind="$attrs"
-    @register="registerDrawer"
-    showFooter
-    :title="getTitle"
-    width="50%"
-    @ok="handleSubmit"
-  >
+  <BasicModal v-bind="$attrs" @register="registerModal" :title="getTitle" @ok="handleSubmit">
     <BasicForm @register="registerForm" />
-  </BasicDrawer>
+  </BasicModal>
 </template>
 <script lang="ts" setup>
   import { ref, computed, unref } from 'vue';
+  import { BasicModal, useModalInner } from '@/components/Modal';
   import { BasicForm, useForm } from '@/components/Form';
-  import { formSchema } from '../menu.data';
-  import { BasicDrawer, useDrawerInner } from '@/components/Drawer';
-  import { getMenuById, getMenuTreeList, insertMenu, updateMenu } from '@/api/system/menu';
+  import { formSchema } from '../dept.data';
+  import { getDeptTreeList, insertDept, updateDept } from '@/api/system/dept';
   import { useMessage } from '@/hooks/web/useMessage';
 
-  defineOptions({ name: 'MenuDrawer' });
+  defineOptions({ name: 'DeptModal' });
 
   const emit = defineEmits(['success', 'register']);
 
@@ -26,53 +19,50 @@
 
   const [registerForm, { resetFields, setFieldsValue, updateSchema, validate }] = useForm({
     labelWidth: 100,
+    baseColProps: { span: 24 },
     schemas: formSchema,
     showActionButtonGroup: false,
-    baseColProps: { lg: 12, md: 24 },
   });
 
-  const [registerDrawer, { setDrawerProps, closeDrawer }] = useDrawerInner(async (data) => {
+  const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data) => {
     await resetFields();
-    setDrawerProps({ confirmLoading: false });
+    setModalProps({ confirmLoading: false });
     isUpdate.value = !!data?.isUpdate;
 
     if (unref(isUpdate)) {
-      getMenuById(data.record.id).then((res) => {
-        setFieldsValue({
-          ...res,
-        });
+      await setFieldsValue({
+        ...data.record,
       });
     }
-    const treeData = await getMenuTreeList();
+    const treeData = await getDeptTreeList();
     await updateSchema({
-      field: 'parentMenu',
+      field: 'parentDept',
       componentProps: { treeData },
     });
   });
 
-  const getTitle = computed(() => (!unref(isUpdate) ? '新增菜单' : '编辑菜单'));
-
+  const getTitle = computed(() => (!unref(isUpdate) ? '新增部门' : '编辑部门'));
   const { createMessage } = useMessage();
 
   async function handleSubmit() {
     try {
       const values = await validate();
-      setDrawerProps({ confirmLoading: true });
+      setModalProps({ confirmLoading: true });
       //修改
       if (unref(isUpdate)) {
-        await updateMenu(values).then(() => {
+        await updateDept(values).then(() => {
           createMessage.success('修改菜单成功!');
         });
       } else {
         //新增
-        await insertMenu(values).then(() => {
+        await insertDept(values).then(() => {
           createMessage.success('新增菜单成功!');
         });
       }
-      closeDrawer();
+      closeModal();
       emit('success');
     } finally {
-      setDrawerProps({ confirmLoading: false });
+      setModalProps({ confirmLoading: false });
     }
   }
 </script>

@@ -1,8 +1,10 @@
 import { BasicColumn, FormSchema } from '@/components/Table';
-import { h } from 'vue';
+import { h, ref } from 'vue';
 import { Switch } from 'ant-design-vue';
-import { setRoleStatus } from '@/api/demo/system';
+
 import { useMessage } from '@/hooks/web/useMessage';
+import { setRoleStatus } from '@/api/system/role';
+import { RoleStatus } from '@/api/system/model/roleModel';
 
 type CheckedType = boolean | string | number;
 export const columns: BasicColumn[] = [
@@ -30,15 +32,16 @@ export const columns: BasicColumn[] = [
         record.pendingStatus = false;
       }
       return h(Switch, {
-        checked: record.status === '1',
-        checkedChildren: '停用',
-        unCheckedChildren: '启用',
+        checked: record.status,
+        checkedChildren: '启用',
+        unCheckedChildren: '停用',
         loading: record.pendingStatus,
         onChange(checked: CheckedType) {
           record.pendingStatus = true;
-          const newStatus = checked ? '1' : '0';
+          const newStatus = !!checked;
           const { createMessage } = useMessage();
-          setRoleStatus(record.id, newStatus)
+          const roleStatus = ref<RoleStatus>({ id: record.id, status: newStatus });
+          setRoleStatus(roleStatus.value)
             .then(() => {
               record.status = newStatus;
               createMessage.success(`已成功修改角色状态`);
@@ -55,7 +58,7 @@ export const columns: BasicColumn[] = [
   },
   {
     title: '创建时间',
-    dataIndex: 'createTime',
+    dataIndex: 'updateTime',
     width: 180,
   },
   {
@@ -87,6 +90,12 @@ export const searchFormSchema: FormSchema[] = [
 
 export const formSchema: FormSchema[] = [
   {
+    field: 'id',
+    label: 'id',
+    component: 'Input',
+    show: false,
+  },
+  {
     field: 'roleName',
     label: '角色名称',
     required: true,
@@ -102,13 +111,19 @@ export const formSchema: FormSchema[] = [
     field: 'status',
     label: '状态',
     component: 'RadioButtonGroup',
-    defaultValue: '0',
+    defaultValue: true,
     componentProps: {
       options: [
-        { label: '启用', value: '1' },
-        { label: '停用', value: '0' },
+        { label: '启用', value: true },
+        { label: '停用', value: false },
       ],
     },
+  },
+  {
+    label: '排序',
+    field: 'orderNo',
+    component: 'InputNumber',
+    required: true,
   },
   {
     label: '备注',
@@ -117,7 +132,7 @@ export const formSchema: FormSchema[] = [
   },
   {
     label: ' ',
-    field: 'menu',
+    field: 'menuIds',
     slot: 'menu',
   },
 ];

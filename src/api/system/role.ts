@@ -1,12 +1,13 @@
 import { defHttp } from '@/utils/http/axios';
-import { getMenuInfoModel } from '@/api/system/model/menuModel';
+import { RoleStatus } from '@/api/system/model/roleModel';
 
 enum Api {
   GetRolePage = '/backstage/role/getRolePage',
-  GetMenuById = '/backstage/menu/getMenuById/',
-  InsertMenu = '/backstage/menu/insertMenu',
-  UpdateMenu = '/backstage/menu/updateMenu',
-  DeleteMenu = '/backstage/menu/removeMenu/',
+  GetMenuTreeList = '/backstage/role/getMenuTreeList',
+  InsertRole = '/backstage/role/insertRole',
+  UpdateRole = '/backstage/role/updateRole',
+  RemoveRoleById = '/backstage/role/removeRoleById/',
+  SetRoleStatus = '/backstage/role/setRoleStatus',
 }
 
 /**
@@ -17,38 +18,48 @@ export const getRolePage = (params?) => {
 };
 
 /**
- * @description: 根据id获取菜单详情
+ * @description: 获取菜单树
  */
-export const getMenuById = (params?: string) => {
-  return defHttp.get<getMenuInfoModel>({ url: Api.GetMenuById + params });
+export const getMenuTreeList = () => {
+  return defHttp.get({ url: Api.GetMenuTreeList });
 };
 
 /**
- * @description: 添加菜单 api
+ * @description: 添加角色 api
  */
-export function insertMenu(params) {
+export function insertRole(params) {
   return defHttp.post({
-    url: Api.InsertMenu,
+    url: Api.InsertRole,
     data: params,
   });
 }
 
 /**
- * @description: 修改菜单 api
+ * @description: 修改角色 api
  */
-export function updateMenu(params) {
+export function updateRole(params) {
   return defHttp.put({
-    url: Api.UpdateMenu,
+    url: Api.UpdateRole,
     data: params,
   });
 }
 
 /**
- * @description: 删除菜单 api
+ * @description: 设置角色状态 api
  */
-export function deleteMenu(params: string) {
+export function setRoleStatus(params: RoleStatus) {
+  return defHttp.put({
+    url: Api.SetRoleStatus,
+    data: params,
+  });
+}
+
+/**
+ * @description: 删除角色 api
+ */
+export function removeRoleById(params: string) {
   return defHttp.delete({
-    url: Api.DeleteMenu,
+    url: Api.RemoveRoleById,
     params: params,
   });
 }

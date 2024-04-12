@@ -2,7 +2,7 @@
   <div>
     <BasicTable @register="registerTable">
       <template #toolbar>
-        <a-button type="primary" @click="handleCreate"> 新增角色 </a-button>
+        <a-button type="primary" @click="handleCreate"> 新增部门 </a-button>
       </template>
       <template #bodyCell="{ column, record }">
         <template v-if="column.key === 'action'">
@@ -26,37 +26,37 @@
         </template>
       </template>
     </BasicTable>
-    <RoleDrawer @register="registerDrawer" @success="handleSuccess" />
+    <DeptModal @register="registerModal" @success="handleSuccess" />
   </div>
 </template>
 <script lang="ts" setup>
   import { BasicTable, useTable, TableAction } from '@/components/Table';
-
-  import { useDrawer } from '@/components/Drawer';
-  import RoleDrawer from './component/RoleDrawer.vue';
-
-  import { columns, searchFormSchema } from './role.data';
-  import { getRolePage, removeRoleById } from '@/api/system/role';
+  import { useModal } from '@/components/Modal';
+  import DeptModal from './component/DeptModal.vue';
+  import { columns, searchFormSchema } from './dept.data';
+  import { getDeptTreeList, removeDeptById } from '@/api/system/dept';
   import { useMessage } from '@/hooks/web/useMessage';
 
-  defineOptions({ name: 'Role' });
+  defineOptions({ name: 'Dept' });
 
-  const [registerDrawer, { openDrawer }] = useDrawer();
+  const [registerModal, { openModal }] = useModal();
   const [registerTable, { reload }] = useTable({
-    title: '角色列表',
-    api: getRolePage,
+    title: '部门列表',
+    api: getDeptTreeList,
     columns,
     formConfig: {
       labelWidth: 120,
       schemas: searchFormSchema,
     },
-    pagination: true,
+    pagination: false,
+    striped: false,
     useSearchForm: true,
     showTableSetting: true,
     bordered: true,
     showIndexColumn: false,
+    canResize: false,
     actionColumn: {
-      width: 160,
+      width: 80,
       title: '操作',
       dataIndex: 'action',
       // slots: { customRender: 'action' },
@@ -65,13 +65,13 @@
   });
 
   function handleCreate() {
-    openDrawer(true, {
+    openModal(true, {
       isUpdate: false,
     });
   }
 
   function handleEdit(record: Recordable) {
-    openDrawer(true, {
+    openModal(true, {
       record,
       isUpdate: true,
     });
@@ -80,8 +80,8 @@
   const { createMessage } = useMessage();
 
   function handleDelete(record: Recordable) {
-    removeRoleById(record.id).then(() => {
-      createMessage.success('删除角色成功!');
+    removeDeptById(record.id).then(() => {
+      createMessage.success('删除菜单成功!');
       reload();
     });
   }

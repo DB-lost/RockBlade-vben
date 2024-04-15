@@ -7,10 +7,10 @@
   import { ref, computed, unref } from 'vue';
   import { BasicModal, useModalInner } from '@/components/Modal';
   import { BasicForm, useForm } from '@/components/Form';
-  import { accountFormSchema } from '../staff.data';
   import { getDeptTreeList } from '@/api/system/dept';
   import { useMessage } from '@/hooks/web/useMessage';
   import { insertStaff, updateStaff } from '@/api/system/staff';
+  import { staffFormSchema } from '@/views/system/staff/staff.data';
 
   defineOptions({ name: 'StaffModal' });
 
@@ -22,7 +22,7 @@
   const [registerForm, { setFieldsValue, updateSchema, resetFields, validate }] = useForm({
     labelWidth: 100,
     baseColProps: { span: 24 },
-    schemas: accountFormSchema,
+    schemas: staffFormSchema,
     showActionButtonGroup: false,
     actionColOptions: {
       span: 23,
@@ -44,17 +44,17 @@
     const treeData = await getDeptTreeList();
     await updateSchema([
       {
-        field: 'pwd',
+        field: 'password',
         show: !unref(isUpdate),
       },
       {
-        field: 'dept',
+        field: 'deptId',
         componentProps: { treeData },
       },
     ]);
   });
 
-  const getTitle = computed(() => (!unref(isUpdate) ? '新增账号' : '编辑账号'));
+  const getTitle = computed(() => (!unref(isUpdate) ? '新增员工' : '编辑员工'));
 
   const { createMessage } = useMessage();
 

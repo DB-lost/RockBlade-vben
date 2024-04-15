@@ -1,5 +1,5 @@
 <template>
-  <PageWrapper dense contentFullHeight fixedHeight contentClass="flex">
+  <PageWrapper dense contentFullHeight contentClass="flex">
     <DeptTree class="w-1/4 xl:w-1/5" @select="handleSelect" />
     <BasicTable @register="registerTable" class="w-3/4 xl:w-4/5" :searchInfo="searchInfo">
       <template #toolbar>
@@ -35,7 +35,7 @@
         </template>
       </template>
     </BasicTable>
-    <AccountModal @register="registerModal" @success="handleSuccess" />
+    <StaffModal @register="registerModal" @success="handleSuccess" />
   </PageWrapper>
 </template>
 <script lang="ts" setup>
@@ -46,7 +46,7 @@
   import DeptTree from './component/DeptTree.vue';
 
   import { useModal } from '@/components/Modal';
-  import AccountModal from './component/StaffModal.vue';
+  import StaffModal from './component/StaffModal.vue';
 
   import { columns, searchFormSchema } from './staff.data';
   import { useGo } from '@/hooks/web/usePage';

@@ -77,12 +77,24 @@ export const searchFormSchema: FormSchema[] = [
   },
 ];
 
-export const accountFormSchema: FormSchema[] = [
+/**
+ * 是否新增
+ * @param type
+ */
+const isInsert = (type: boolean) => type;
+
+export const staffFormSchema: FormSchema[] = [
+  {
+    field: 'id',
+    label: 'id',
+    component: 'Input',
+    show: false,
+  },
   {
     field: 'username',
     label: '用户名',
     component: 'Input',
-    helpMessage: ['本字段演示异步验证', '不能输入带有admin的用户名'],
+    helpMessage: ['检查用户名是否存在'],
     rules: [
       {
         required: true,
@@ -104,25 +116,40 @@ export const accountFormSchema: FormSchema[] = [
     ],
   },
   {
-    field: 'pwd',
+    field: 'password',
     label: '密码',
     component: 'InputPassword',
     required: true,
-    ifShow: false,
+    ifShow: ({ values }) => !isInsert(values.id),
   },
   {
-    label: '角色',
-    field: 'role',
-    component: 'ApiSelect',
+    label: '姓名',
+    field: 'name',
+    component: 'Input',
+    required: true,
+  },
+  {
+    label: '手机',
+    field: 'phone',
+    component: 'InputNumber',
     componentProps: {
-      api: getAllRoleList,
-      labelField: 'roleName',
-      valueField: 'roleValue',
+      maxlength: 11,
     },
     required: true,
   },
   {
-    field: 'dept',
+    label: '角色',
+    field: 'roleId',
+    component: 'ApiSelect',
+    componentProps: {
+      api: getAllRoleList,
+      labelField: 'roleName',
+      valueField: 'id',
+    },
+    required: true,
+  },
+  {
+    field: 'deptId',
     label: '所属部门',
     component: 'TreeSelect',
     componentProps: {
@@ -140,14 +167,24 @@ export const accountFormSchema: FormSchema[] = [
     component: 'Input',
     required: true,
   },
-
   {
     label: '邮箱',
     field: 'email',
     component: 'Input',
     required: true,
   },
-
+  {
+    field: 'sex',
+    label: '性别',
+    component: 'RadioButtonGroup',
+    defaultValue: false,
+    componentProps: {
+      options: [
+        { label: '女', value: true },
+        { label: '男', value: false },
+      ],
+    },
+  },
   {
     label: '备注',
     field: 'remark',

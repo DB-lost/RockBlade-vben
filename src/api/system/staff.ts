@@ -32,7 +32,7 @@ export const getAllRoleList = () => {
 };
 
 export const usernameIsExist = (account: string) =>
-  defHttp.post({ url: Api.UsernameIsExist, params: { account } }, { errorMessageMode: 'none' });
+  defHttp.get({ url: Api.UsernameIsExist, params: { account } }, { errorMessageMode: 'none' });
 
 /**
  * @description: 添加部门 api

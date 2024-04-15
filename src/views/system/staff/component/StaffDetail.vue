@@ -34,7 +34,7 @@
   import { useTabs } from '@/hooks/web/useTabs';
   import { Tabs } from 'ant-design-vue';
 
-  defineOptions({ name: 'AccountDetail' });
+  defineOptions({ name: 'StaffDetail' });
 
   const ATabs = Tabs;
   const ATabPane = Tabs.TabPane;

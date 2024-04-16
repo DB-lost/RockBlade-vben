@@ -89,7 +89,6 @@
   }
 
   function handleEdit(record: Recordable) {
-    console.log(record);
     openModal(true, {
       record,
       isUpdate: true,

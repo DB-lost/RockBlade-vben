@@ -1,32 +1,10 @@
 import { BasicColumn, FormSchema } from '@/components/Table';
 import { getAllRoleList, usernameIsExist } from '@/api/system/staff';
 
-/**
- * transform mock data
- * {
- *  0: '华东分部',
- * '0-0': '华东分部-研发部'
- * '0-1': '华东分部-市场部',
- *  ...
- * }
- */
-export const deptMap = (() => {
-  const pDept = ['华东分部', '华南分部', '西北分部'];
-  const cDept = ['研发部', '市场部', '商务部', '财务部'];
-
-  return pDept.reduce((map, p, pIdx) => {
-    map[pIdx] = p;
-
-    cDept.forEach((c, cIndex) => (map[`${pIdx}-${cIndex}`] = `${p}-${c}`));
-
-    return map;
-  }, {});
-})();
-
 export const columns: BasicColumn[] = [
   {
     title: '用户名',
-    dataIndex: 'account',
+    dataIndex: 'username',
     width: 120,
   },
   {
@@ -37,24 +15,22 @@ export const columns: BasicColumn[] = [
   {
     title: '邮箱',
     dataIndex: 'email',
-    width: 120,
+    width: 200,
   },
   {
     title: '创建时间',
-    dataIndex: 'createTime',
+    dataIndex: 'updateTime',
     width: 180,
   },
   {
     title: '角色',
-    dataIndex: 'role',
+    dataIndex: 'roleName',
     width: 200,
   },
   {
     title: '所属部门',
-    dataIndex: 'dept',
-    customRender: ({ value }) => {
-      return deptMap[value];
-    },
+    dataIndex: 'deptNames',
+    width: 300,
   },
   {
     title: '备注',
@@ -131,7 +107,7 @@ export const staffFormSchema: FormSchema[] = [
   {
     label: '手机',
     field: 'phone',
-    component: 'InputNumber',
+    component: 'Input',
     componentProps: {
       maxlength: 11,
     },
@@ -165,13 +141,11 @@ export const staffFormSchema: FormSchema[] = [
     field: 'nickname',
     label: '昵称',
     component: 'Input',
-    required: true,
   },
   {
     label: '邮箱',
     field: 'email',
     component: 'Input',
-    required: true,
   },
   {
     field: 'sex',
@@ -182,6 +156,18 @@ export const staffFormSchema: FormSchema[] = [
       options: [
         { label: '女', value: true },
         { label: '男', value: false },
+      ],
+    },
+  },
+  {
+    field: 'status',
+    label: '状态',
+    component: 'RadioButtonGroup',
+    defaultValue: true,
+    componentProps: {
+      options: [
+        { label: '启用', value: true },
+        { label: '禁用', value: false },
       ],
     },
   },

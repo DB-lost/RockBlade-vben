@@ -15,6 +15,8 @@ export default defineApplicationConfig({
       ],
     },
     server: {
+      host: '127.0.0.1',
+      port: 3100,
       proxy: {
         '/RockBlade-System': {
           target: 'http://localhost:8080/RockBlade-System',

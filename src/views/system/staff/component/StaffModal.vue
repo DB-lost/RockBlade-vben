@@ -11,6 +11,7 @@
   import { useMessage } from '@/hooks/web/useMessage';
   import { insertStaff, updateStaff } from '@/api/system/staff';
   import { staffFormSchema } from '@/views/system/staff/staff.data';
+  import { RSA256Encrypt } from '@/utils/jesncryptKey';
 
   defineOptions({ name: 'StaffModal' });
 
@@ -68,6 +69,7 @@
           createMessage.success('修改员工成功!');
         });
       } else {
+        values.password = RSA256Encrypt(values.password);
         //新增
         await insertStaff(values).then(() => {
           createMessage.success('新增员工成功!');

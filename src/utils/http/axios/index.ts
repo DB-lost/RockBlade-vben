@@ -16,13 +16,17 @@ import { setObjToUrlParams, deepMerge } from '@/utils';
 import { useErrorLogStoreWithOut } from '@/store/modules/errorLog';
 import { useI18n } from '@/hooks/web/useI18n';
 import { joinTimestamp, formatRequestDate } from './helper';
-import { useUserStoreWithOut } from '@/store/modules/user';
+import { useUserStoreWithOut, useUserStore } from '@/store/modules/user';
 import { AxiosRetry } from '@/utils/http/axios/axiosRetry';
 import axios from 'axios';
+import { useAppStore } from '@/store/modules/app';
+import { usePermissionStore } from '@/store/modules/permission';
+import { useMultipleTabStore } from '@/store/modules/multipleTab';
 
 const globSetting = useGlobSetting();
 const urlPrefix = globSetting.urlPrefix;
 const { createMessage, createErrorModal, createSuccessModal } = useMessage();
+let called = false;
 
 /**
  * @description: 数据处理，方便区分多种处理方式
@@ -167,8 +171,32 @@ const transform: AxiosTransform = {
 
   /**
    * @description: 响应拦截器处理
+   * @param res 结果
+   * @param 11011 未能读取到有效 token -1
+   * @param 11012 token 无效 -2
+   * @param 11013 token 已过期 -3
+   * @param 11014 token 已被顶下线 -4
+   * @param 11015 token 已被踢下线 -5
    */
   responseInterceptors: (res: AxiosResponse<any>) => {
+    if (
+      res.data.code === 11011 ||
+      res.data.code === 11012 ||
+      res.data.code === 11013 ||
+      res.data.code === 11014 ||
+      res.data.code === 11015
+    ) {
+      // 检查标志变量是否为false，如果为false则执行方法
+      if (!called) {
+        // 清除本地缓存 回到登录页面
+        invalidToken();
+        called = true; // 将标志变量设置为true，防止再次调用
+      }
+      setTimeout(() => {
+        called = false; // 在5秒后，将标志变量恢复为false
+      }, 10000);
+      return res;
+    }
     return res;
   },
 
@@ -221,6 +249,25 @@ const transform: AxiosTransform = {
     return Promise.reject(error);
   },
 };
+
+/**
+ * @description token失效处理
+ */
+function invalidToken() {
+  const permissionStore = usePermissionStore();
+  const tabStore = useMultipleTabStore();
+  const userStore = useUserStore();
+  const appStore = useAppStore();
+  localStorage.clear();
+  appStore.resetAllState();
+  permissionStore.resetState();
+  tabStore.resetState();
+  userStore.resetState();
+  createMessage.error('登录失效', 2);
+  setTimeout(() => {
+    location.reload();
+  }, 3000);
+}
 
 function createAxios(opt?: Partial<CreateAxiosOptions>) {
   return new VAxios(

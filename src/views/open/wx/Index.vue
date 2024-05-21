@@ -3,7 +3,7 @@
     <BasicTable @register="registerTable">
       <template #toolbar>
         <Button type="primary" @click="handleGetAuth"> 获取授权 </Button>
-        <Button type="warning" @click="handleGetAuth"> 代码管理 </Button>
+        <Button type="warning" @click="handleCodeManage"> 代码管理 </Button>
       </template>
       <template #bodyCell="{ column, record }">
         <template v-if="column.key === 'action'">
@@ -72,6 +72,13 @@
    */
   function handleView(record: Recordable) {
     go('/open/wx/app-info/' + record.appId);
+  }
+
+  /**
+   * 代码管理
+   */
+  function handleCodeManage() {
+    go('/open/wx/code-manage');
   }
 </script>
 

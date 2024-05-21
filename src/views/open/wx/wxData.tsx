@@ -1,7 +1,8 @@
-import { BasicColumn } from '@/components/Table';
+import { BasicColumn, FormSchema } from '@/components/Table';
 import { h } from 'vue';
 import { Tag, Image } from 'ant-design-vue';
 import { DescItem } from '@/components/Description';
+import { formatToDateTime } from '@/utils/dateUtil';
 
 export const columns: BasicColumn[] = [
   {
@@ -133,5 +134,245 @@ export const releaseInfoSchema: DescItem[] = [
   {
     field: 'releaseTime',
     label: '提交时间',
+  },
+];
+
+/**
+ * templateColumns
+ */
+export const templateColumns: BasicColumn[] = [
+  {
+    title: '版本号',
+    dataIndex: 'userVersion',
+    width: 50,
+  },
+  {
+    title: '用户描述',
+    dataIndex: 'userDesc',
+    width: 200,
+  },
+  {
+    title: 'appId',
+    dataIndex: 'sourceMiniProgramAppid',
+    width: 100,
+  },
+  {
+    title: '小程序',
+    dataIndex: 'sourceMiniProgram',
+    width: 100,
+  },
+  {
+    title: '模板类型',
+    dataIndex: 'templateType',
+    width: 70,
+    customRender: ({ record }) => {
+      if (record.templateType === 0) {
+        //设置样式
+        return h(Tag, { color: 'green' }, () => '普通模板');
+      } else {
+        return h(Tag, { color: 'blue' }, () => '标准模板');
+      }
+    },
+  },
+  {
+    title: '草稿id',
+    dataIndex: 'draftId',
+    width: 50,
+  },
+  {
+    title: '模板创建时间',
+    dataIndex: 'createTime',
+    width: 100,
+    customRender: ({ record }) => {
+      return formatToDateTime(new Date(record.createTime * 1000));
+    },
+  },
+];
+
+/**
+ * 草稿箱字段
+ */
+export const draftsColumns: BasicColumn[] = [
+  {
+    title: '版本号',
+    dataIndex: 'userVersion',
+    width: 50,
+  },
+  {
+    title: '用户描述',
+    dataIndex: 'userDesc',
+    width: 400,
+  },
+  {
+    title: '上传时间',
+    dataIndex: 'createTime',
+    width: 100,
+    customRender: ({ record }) => {
+      return formatToDateTime(new Date(record.createTime * 1000));
+    },
+  },
+];
+
+export const templateTypeFormSchema: FormSchema[] = [
+  {
+    field: 'draftId',
+    label: '草稿 ID',
+    component: 'Input',
+    show: false,
+  },
+  {
+    field: 'templateType',
+    label: '模板类型',
+    component: 'Select',
+    componentProps: {
+      options: [
+        {
+          label: '普通模板',
+          value: '0',
+          key: '0',
+        },
+        {
+          label: '标准模板',
+          value: '1',
+          key: '1',
+        },
+      ],
+    },
+    colProps: { span: 12 },
+  },
+];
+
+export const commitCodeFormSchema: FormSchema[] = [
+  {
+    field: 'authorizerAppid',
+    label: '授权方 appid',
+    component: 'Input',
+    show: false,
+  },
+  {
+    field: 'templateId',
+    label: '代码库中的代码模板Id',
+    component: 'Input',
+    show: false,
+  },
+  {
+    field: 'userVersion',
+    label: '代码版本号',
+    component: 'Input',
+  },
+  {
+    field: 'userDesc',
+    label: '代码描述',
+    component: 'InputTextArea',
+  },
+  {
+    field: 'extJson',
+    label: 'extJson',
+    component: 'Input',
+  },
+];
+
+export const submitAuditFormSchema: FormSchema[] = [
+  {
+    field: 'authorizerAppid',
+    label: '授权方 appid',
+    component: 'Input',
+    show: false,
+  },
+  {
+    field: 'templateId',
+    label: '代码库中的代码模板Id',
+    component: 'Input',
+    show: false,
+  },
+  {
+    field: 'userVersion',
+    label: '代码版本号',
+    component: 'Input',
+  },
+  {
+    field: 'userDesc',
+    label: '代码描述',
+    component: 'InputTextArea',
+  },
+  {
+    field: 'extJson',
+    label: 'extJson',
+    component: 'Input',
+  },
+];
+
+/**
+ * auditColumns
+ */
+export const auditColumns: BasicColumn[] = [
+  {
+    title: '微信审核id',
+    dataIndex: 'wxAuditId',
+    width: 100,
+  },
+  {
+    title: '反馈内容',
+    dataIndex: 'feedbackInfo',
+    width: 200,
+  },
+  {
+    title: '版本说明',
+    dataIndex: 'versionDesc',
+    width: 200,
+  },
+  {
+    title: '审核状态',
+    dataIndex: 'auditStatus',
+    width: 80,
+    customRender: ({ record }) => {
+      if (record.auditStatus === 0) {
+        return h(Tag, { color: 'green' }, () => '审核成功');
+      } else if (record.auditStatus === 1) {
+        return h(Tag, { color: 'red' }, () => '审核被拒绝');
+      } else if (record.auditStatus === 2) {
+        return h(Tag, { color: 'blue' }, () => '审核中');
+      } else if (record.auditStatus === 3) {
+        return h(Tag, { color: 'orange' }, () => '审核撤回');
+      } else {
+        return h(Tag, { color: 'purple' }, () => '审核延后');
+      }
+    },
+  },
+  {
+    title: '申请时间',
+    dataIndex: 'createTime',
+    width: 100,
+  },
+];
+
+/**
+ * 审核返回
+ */
+export const auditSchema: DescItem[] = [
+  {
+    field: 'auditId',
+    label: '审核id',
+  },
+  {
+    field: 'status',
+    label: '状态',
+    render: (curVal) => {
+      if (curVal === 0) {
+        return h(Tag, { color: 'green' }, () => '审核成功');
+      } else if (curVal === 1) {
+        return h(Tag, { color: 'red' }, () => '审核被拒绝');
+      } else if (curVal === 2) {
+        return h(Tag, { color: 'blue' }, () => '审核中');
+      } else if (curVal === 3) {
+        return h(Tag, { color: 'orange' }, () => '审核撤回');
+      } else {
+        return h(Tag, { color: 'purple' }, () => '审核延后');
+      }
+    },
+  },
+  {
+    field: 'reason',
+    label: '失败原因',
   },
 ];

@@ -376,3 +376,13 @@ export const auditSchema: DescItem[] = [
     label: '失败原因',
   },
 ];
+
+/**
+ * 小程序基础信息
+ */
+export const baseInfoSchema: DescItem[] = [
+  {
+    field: 'appid',
+    label: 'appid',
+  },
+];

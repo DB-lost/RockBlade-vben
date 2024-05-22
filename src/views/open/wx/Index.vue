@@ -1,5 +1,5 @@
 <template>
-  <PageWrapper dense contentFullHeight contentClass="flex">
+  <PageWrapper title="微信开放平台授权" dense contentFullHeight contentClass="flex">
     <BasicTable @register="registerTable">
       <template #toolbar>
         <Button type="primary" @click="handleGetAuth"> 获取授权 </Button>
@@ -10,6 +10,12 @@
           <TableAction
             :actions="[
               {
+                label: '基础信息管理',
+                icon: 'ant-design:heat-map-outlined',
+                onClick: handleBaseInfoManage.bind(null, record),
+                ifShow: record.appType === 0,
+              },
+              {
                 label: '小程序详情',
                 icon: 'clarity:info-standard-line',
                 tooltip: '查看app详情',
@@ -19,7 +25,7 @@
           />
         </template>
         <template v-else-if="column.key === 'qrcodeUrl'">
-          <Avatar :size="60" :src="record.qrcodeUrl" />
+          <Image :width="60" :src="record.qrcodeUrl" />
         </template>
         <template v-else-if="column.key === 'headImg'">
           <Avatar :size="60" :src="record.headImg" />
@@ -36,13 +42,12 @@
   //import { useMessage } from '@/hooks/web/useMessage';
   import { getWxOpenAuthPage } from '@/api/open/wx/wx';
   import { useGo } from '@/hooks/web/usePage';
-  import { Avatar, Button } from 'ant-design-vue';
+  import { Avatar, Button, Image } from 'ant-design-vue';
 
   defineOptions({ name: 'Wx' });
 
   const go = useGo();
   const [registerTable] = useTable({
-    title: '微信开放平台授权',
     api: getWxOpenAuthPage,
     columns,
     showTableSetting: true,
@@ -79,6 +84,10 @@
    */
   function handleCodeManage() {
     go('/open/wx/code-manage');
+  }
+
+  function handleBaseInfoManage(record: Recordable) {
+    go('/open/wx/base-info-manage/' + record.appId);
   }
 </script>
 

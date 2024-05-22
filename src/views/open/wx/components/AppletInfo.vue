@@ -1,5 +1,5 @@
 <template>
-  <PageWrapper :title="nickName" contentBackground @back="goBack">
+  <PageWrapper title="基础信息" contentBackground @back="goBack">
     <Description @register="register" />
   </PageWrapper>
 </template>

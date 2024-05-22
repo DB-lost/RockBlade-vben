@@ -1,4 +1,5 @@
 import { defHttp } from '@/utils/http/axios';
+import { AppInfo, BaseInfo } from '@/api/open/model/WxModel';
 
 enum Api {
   GetWxOpenAuthPage = '/backstage/wxOpen/getWxOpenAuthPage',
@@ -16,6 +17,7 @@ enum Api {
   UndoAudit = '/backstage/wxOpen/undoAudit/',
   GetLatestAuditStatus = '/backstage/wxOpen/getLatestAuditStatus',
   SpeedupCodeAudit = '/backstage/wxOpen/speedupCodeAudit',
+  GetAccountBasicInfo = '/backstage/wxOpen/getAccountBasicInfo',
 }
 
 /**
@@ -39,7 +41,7 @@ export function getAuthorizedLink(params?) {
  * @description: 获取小程序详情 api
  */
 export function getAppInfo(params?) {
-  return defHttp.get({
+  return defHttp.get<AppInfo>({
     url: Api.GetAppInfo,
     params,
   });
@@ -158,5 +160,15 @@ export function speedupCodeAudit(params?) {
   return defHttp.post({
     url: Api.SpeedupCodeAudit,
     data: params,
+  });
+}
+
+/**
+ * @description: 获取小程序基础信息 api
+ */
+export function getAccountBasicInfo(params?) {
+  return defHttp.get<BaseInfo>({
+    url: Api.GetAccountBasicInfo,
+    params: params,
   });
 }

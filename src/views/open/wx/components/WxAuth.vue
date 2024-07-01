@@ -40,7 +40,6 @@
    */
   function handleGetAuthUrl() {
     getAuthorizedLink().then((res) => {
-      //window.open(res);
       authUrl.value = res;
     });
   }

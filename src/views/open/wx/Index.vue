@@ -25,7 +25,7 @@
           />
         </template>
         <template v-else-if="column.key === 'qrcodeUrl'">
-          <Image :width="60" :src="record.qrcodeUrl" />
+          <Image :width="60" :src="record.qrcodeUrl" referrerpolicy="no-referrer" />
         </template>
         <template v-else-if="column.key === 'headImg'">
           <Avatar :size="60" :src="record.headImg" />

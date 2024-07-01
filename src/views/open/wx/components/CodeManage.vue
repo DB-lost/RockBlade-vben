@@ -113,7 +113,7 @@
     release,
     speedupCodeAudit,
     undoAudit,
-  } from '@/api/open/wx/wx';
+  } from '@/api/open/wx';
   import { draftsColumns, templateColumns } from '@/views/open/wx/wxData';
   import TemplateTypeModal from '@/views/open/wx/components/TemplateTypeModal.vue';
   import { BasicModal, useModal } from '@/components/Modal';

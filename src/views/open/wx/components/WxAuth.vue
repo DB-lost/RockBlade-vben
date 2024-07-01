@@ -18,7 +18,7 @@
   import { useDesign } from '@/hooks/web/useDesign';
   import { useWindowSizeFn } from '@vben/hooks';
   import { Spin } from 'ant-design-vue';
-  import { getAuthorizedLink } from '@/api/open/wx/wx';
+  import { getAuthorizedLink } from '@/api/open/wx';
   import { PageWrapper } from '@/components/Page';
   import { useGo } from '@/hooks/web/usePage';
 
@@ -40,6 +40,7 @@
    */
   function handleGetAuthUrl() {
     getAuthorizedLink().then((res) => {
+      //window.open(res);
       authUrl.value = res;
     });
   }

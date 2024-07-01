@@ -9,7 +9,7 @@
   import { useGo } from '@/hooks/web/usePage';
   import { useRoute } from 'vue-router';
   import { nextTick, reactive, ref } from 'vue';
-  import { getAccountBasicInfo } from '@/api/open/wx/wx';
+  import { getAccountBasicInfo } from '@/api/open/wx';
   import { Description, useDescription } from '@/components/Description';
   import { baseInfoSchema } from '@/views/open/wx/wxData';
 
@@ -30,8 +30,7 @@
   nextTick(() => {
     //获取基础信息
     getAccountBasicInfo({ appid: appid.value }).then((res) => {
-      const result = JSON.parse(res);
-      baseInfoData.appid = result.appid;
+      baseInfoData.appid = res.appid;
     });
   });
 

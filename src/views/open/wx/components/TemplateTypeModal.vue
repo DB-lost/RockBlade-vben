@@ -7,7 +7,7 @@
   import { BasicModal, useModalInner } from '@/components/Modal';
   import { BasicForm, useForm } from '@/components/Form';
   import { templateTypeFormSchema } from '@/views/open/wx/wxData';
-  import { addToTemplate } from '@/api/open/wx/wx';
+  import { addToTemplate } from '@/api/open/wx';
   import { useMessage } from '@/hooks/web/useMessage';
 
   /**

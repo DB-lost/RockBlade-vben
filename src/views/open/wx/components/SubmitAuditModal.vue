@@ -8,7 +8,7 @@
   import { BasicModal, useModalInner } from '@/components/Modal';
   import { useMessage } from '@/hooks/web/useMessage';
   import { submitAuditFormSchema } from '@/views/open/wx/wxData';
-  import { submitAudit } from '@/api/open/wx/wx';
+  import { submitAudit } from '@/api/open/wx';
 
   /**
    * 消息提醒

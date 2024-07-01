@@ -40,7 +40,7 @@
   import { BasicTable, TableAction, useTable } from '@/components/Table';
   import { columns } from '@/views/open/wx/wxData';
   //import { useMessage } from '@/hooks/web/useMessage';
-  import { getWxOpenAuthPage } from '@/api/open/wx/wx';
+  import { getWxOpenAuthPage } from '@/api/open/wx';
   import { useGo } from '@/hooks/web/usePage';
   import { Avatar, Button, Image } from 'ant-design-vue';
 

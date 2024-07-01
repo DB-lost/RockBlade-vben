@@ -19,7 +19,7 @@ export default defineApplicationConfig({
       port: 3100,
       proxy: {
         '/RockBlade-System': {
-          target: 'http://localhost:8080/RockBlade-System',
+          target: 'http://localhost:18080/RockBlade-System',
           changeOrigin: true,
           ws: true,
           rewrite: (path) => path.replace(new RegExp(`^/RockBlade-System`), ''),
@@ -27,7 +27,7 @@ export default defineApplicationConfig({
           // secure: false
         },
         '/upload': {
-          target: 'http://localhost:3300/upload',
+          target: 'http://localhost:18080/RockBlade-System/upload',
           changeOrigin: true,
           ws: true,
           rewrite: (path) => path.replace(new RegExp(`^/upload`), ''),

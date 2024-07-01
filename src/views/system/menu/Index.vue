@@ -37,11 +37,12 @@
   import { columns, searchFormSchema } from './menu.data';
   import { deleteMenu, getMenuTreeList } from '@/api/system/menu';
   import { useMessage } from '@/hooks/web/useMessage';
+  import { nextTick } from 'vue';
 
   defineOptions({ name: 'Menu' });
 
   const [registerDrawer, { openDrawer }] = useDrawer();
-  const [registerTable, { reload }] = useTable({
+  const [registerTable, { reload, expandAll }] = useTable({
     title: '菜单列表',
     api: getMenuTreeList,
     columns,
@@ -61,8 +62,6 @@
       width: 80,
       title: '操作',
       dataIndex: 'action',
-      // slots: { customRender: 'action' },
-      fixed: undefined,
     },
   });
 
@@ -92,8 +91,11 @@
     reload();
   }
 
+  /**
+   * 初始化时展开所有表项
+   */
   function onFetchSuccess() {
     // 默认展开所有表项
-    //nextTick(expandAll);
+    nextTick(expandAll);
   }
 </script>

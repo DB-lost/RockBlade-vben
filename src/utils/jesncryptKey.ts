@@ -1,7 +1,9 @@
 import { JSEncrypt } from 'jsencrypt/lib/JSEncrypt';
 
 const publicKey = `-----BEGIN PUBLIC KEY-----
-MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCKVEQpkuxqNxw2tQ6LHn0AwAyUL1vqAI/Czn9FdbKfZYFYnc/M9gtB1DBOgZb6vd9odFhhD0BVvIMNE5dl8EYQc+QiEEEH/NxPPfn8pNHhJhHek107xLQPazinJVOJhoRY/aa6AwNbYnRla88ZUGtZLrOOzECXDpfxMlyX/oOlZQIDAQAB
+MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCz3/oKOyE4beKfvE0AfqEuuH50Q4gL/xgxk5sC
+y5JzLtraUungQKCOsGaA4eQsgvbzD1AEeu2tpUPsth7hBBSZubes8rkAu5rE6NBIBx9vjlGIwghH
+jVg9NHd0RDJqVsqBejmQ+D8Mwa8fmSOHsjuW3BidDQxKleBnU/GptCg8xQIDAQAB
 -----END PUBLIC KEY-----`;
 
 // 加密方法  公钥

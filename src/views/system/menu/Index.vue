@@ -1,6 +1,10 @@
 <template>
   <div>
-    <BasicTable @register="registerTable" @fetch-success="onFetchSuccess">
+    <BasicTable
+      @register="registerTable"
+      @fetch-success="onFetchSuccess"
+      v-if="hasPermission(['*', 'system.menu.list'])"
+    >
       <template #toolbar>
         <a-button type="primary" @click="handleCreate"> 新增菜单 </a-button>
       </template>
@@ -33,14 +37,19 @@
 <script lang="ts" setup>
   import { BasicTable, useTable, TableAction } from '@/components/Table';
   import { useDrawer } from '@/components/Drawer';
-  import MenuDrawer from './component/MenuDrawer.vue';
-  import { columns, searchFormSchema } from './menu.data';
+  import MenuDrawer from '@/views/system/menu/components/MenuDrawer.vue';
+  import { columns, searchFormSchema } from './menu_data';
   import { deleteMenu, getMenuTreeList } from '@/api/system/menu';
   import { useMessage } from '@/hooks/web/useMessage';
   import { nextTick } from 'vue';
+  import { usePermission } from '@/hooks/web/usePermission';
 
   defineOptions({ name: 'Menu' });
 
+  /**
+   * 权限控制
+   */
+  const { hasPermission } = usePermission();
   const [registerDrawer, { openDrawer }] = useDrawer();
   const [registerTable, { reload, expandAll }] = useTable({
     title: '菜单列表',

@@ -10,7 +10,7 @@
   import { getDeptTreeList } from '@/api/system/dept';
   import { useMessage } from '@/hooks/web/useMessage';
   import { insertStaff, updateStaff } from '@/api/system/staff';
-  import { staffFormSchema } from '@/views/system/staff/staff.data';
+  import { staffFormSchema } from '@/views/system/staff/staff_data';
   import { RSA256Encrypt } from '@/utils/jesncryptKey';
 
   defineOptions({ name: 'StaffModal' });

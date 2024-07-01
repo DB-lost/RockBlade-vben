@@ -3,8 +3,12 @@
     <DeptTree class="w-1/4 xl:w-1/5" @select="handleSelect" />
     <BasicTable @register="registerTable" class="w-3/4 xl:w-4/5" :searchInfo="searchInfo">
       <template #toolbar>
-        <a-button type="primary" @click="handleCreate">新增账号</a-button>
-        <a-button type="primary" @click="handleExport">导出账号</a-button>
+        <Button
+          type="primary"
+          @click="handleCreate"
+          v-if="hasPermission(['*', 'system.staff.change'])"
+          >新增账号</Button
+        >
       </template>
       <template #bodyCell="{ column, record }">
         <template v-if="column.key === 'action'">
@@ -19,6 +23,7 @@
                 icon: 'clarity:note-edit-line',
                 tooltip: '编辑用户资料',
                 onClick: handleEdit.bind(null, record),
+                auth: ['*', 'system.staff.change'],
               },
               {
                 icon: 'ant-design:delete-outlined',
@@ -29,6 +34,7 @@
                   placement: 'left',
                   confirm: handleDelete.bind(null, record),
                 },
+                auth: ['*', 'system.staff.change'],
               },
             ]"
           />
@@ -40,24 +46,27 @@
 </template>
 <script lang="ts" setup>
   import { reactive } from 'vue';
-
+  import { usePermission } from '@/hooks/web/usePermission';
   import { BasicTable, useTable, TableAction } from '@/components/Table';
   import { PageWrapper } from '@/components/Page';
-  import DeptTree from './component/DeptTree.vue';
-
+  import DeptTree from '@/views/system/staff/components/DeptTree.vue';
   import { useModal } from '@/components/Modal';
-  import StaffModal from './component/StaffModal.vue';
-
-  import { columns, searchFormSchema } from './staff.data';
+  import StaffModal from '@/views/system/staff/components/StaffModal.vue';
+  import { Button } from 'ant-design-vue';
+  import { columns, searchFormSchema } from './staff_data';
   import { useGo } from '@/hooks/web/usePage';
   import { getStaffPage, removeStaffById } from '@/api/system/staff';
 
   defineOptions({ name: 'Staff' });
 
+  /**
+   * 权限控制
+   */
+  const { hasPermission } = usePermission();
   const go = useGo();
   const [registerModal, { openModal }] = useModal();
   const searchInfo = reactive<Recordable>({});
-  const [registerTable, { reload, getSearchInfo }] = useTable({
+  const [registerTable, { reload }] = useTable({
     title: '账号列表',
     api: getStaffPage,
     rowKey: 'id',
@@ -71,7 +80,6 @@
     showTableSetting: true,
     bordered: true,
     handleSearchInfoFn(info) {
-      console.log('handleSearchInfoFn', info);
       return info;
     },
     actionColumn: {
@@ -99,10 +107,6 @@
     reload();
   }
 
-  function handleExport() {
-    console.log(getSearchInfo());
-  }
-
   function handleSuccess() {
     reload();
   }
@@ -113,6 +117,6 @@
   }
 
   function handleView(record: Recordable) {
-    go('/system/account_detail/' + record.id);
+    go('/system/staff_detail/' + record.id);
   }
 </script>

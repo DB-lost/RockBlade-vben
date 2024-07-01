@@ -163,7 +163,7 @@ export const formSchema: FormSchema[] = [
   /*{
     field: 'isExt',
     label: '是否外链',
-    component: 'RadioButtonGroup',
+    components: 'RadioButtonGroup',
     defaultValue: '0',
     componentProps: {
       options: [

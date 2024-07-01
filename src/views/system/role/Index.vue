@@ -1,6 +1,6 @@
 <template>
   <div>
-    <BasicTable @register="registerTable">
+    <BasicTable @register="registerTable" v-if="hasPermission(['*', 'system.menu.list'])">
       <template #toolbar>
         <a-button type="primary" @click="handleCreate"> 新增角色 </a-button>
       </template>
@@ -31,16 +31,19 @@
 </template>
 <script lang="ts" setup>
   import { BasicTable, useTable, TableAction } from '@/components/Table';
-
+  import { usePermission } from '@/hooks/web/usePermission';
   import { useDrawer } from '@/components/Drawer';
-  import RoleDrawer from './component/RoleDrawer.vue';
-
-  import { columns, searchFormSchema } from './role.data';
+  import RoleDrawer from './components/RoleDrawer.vue';
+  import { columns, searchFormSchema } from './role_data';
   import { getRolePage, removeRoleById } from '@/api/system/role';
   import { useMessage } from '@/hooks/web/useMessage';
 
   defineOptions({ name: 'Role' });
 
+  /**
+   * 权限控制
+   */
+  const { hasPermission } = usePermission();
   const [registerDrawer, { openDrawer }] = useDrawer();
   const [registerTable, { reload }] = useTable({
     title: '角色列表',

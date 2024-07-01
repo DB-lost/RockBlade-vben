@@ -24,7 +24,7 @@
 <script lang="ts" setup>
   import { ref, computed, unref } from 'vue';
   import { BasicForm, useForm } from '@/components/Form';
-  import { formSchema } from '../role.data';
+  import { formSchema } from '../role_data';
   import { BasicDrawer, useDrawerInner } from '@/components/Drawer';
   import { BasicTree, TreeItem } from '@/components/Tree';
   import { getMenuTreeList, insertRole, updateRole } from '@/api/system/role';

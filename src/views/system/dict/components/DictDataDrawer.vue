@@ -11,22 +11,19 @@
   </BasicDrawer>
 </template>
 <script lang="ts" setup>
-  import { ref, computed, unref } from 'vue';
-  import { BasicForm, useForm } from '@/components/Form';
-  import { formSchema } from '../menu.data';
+  import { computed, ref, unref } from 'vue';
   import { BasicDrawer, useDrawerInner } from '@/components/Drawer';
-  import { getMenuById, getMenuTreeList, insertMenu, updateMenu } from '@/api/system/menu';
+  import { BasicForm, useForm } from '@/components/Form';
+  import { dictDataFormSchema } from '@/views/system/dict/dict_data';
   import { useMessage } from '@/hooks/web/useMessage';
-
-  defineOptions({ name: 'MenuDrawer' });
+  import { insertDictData, updateDictData } from '@/api/system/dict';
 
   const emit = defineEmits(['success', 'register']);
 
   const isUpdate = ref(true);
-
-  const [registerForm, { resetFields, setFieldsValue, updateSchema, validate }] = useForm({
+  const [registerForm, { resetFields, setFieldsValue, validate }] = useForm({
     labelWidth: 100,
-    schemas: formSchema,
+    schemas: dictDataFormSchema,
     showActionButtonGroup: false,
     baseColProps: { lg: 12, md: 24 },
   });
@@ -35,22 +32,16 @@
     await resetFields();
     setDrawerProps({ confirmLoading: false });
     isUpdate.value = !!data?.isUpdate;
-
     if (unref(isUpdate)) {
-      getMenuById(data.record.id).then((res) => {
-        setFieldsValue({
-          ...res,
-        });
+      await setFieldsValue({
+        ...data.record,
       });
+    } else {
+      await setFieldsValue({ dictType: data.dictType });
     }
-    const treeData = await getMenuTreeList();
-    await updateSchema({
-      field: 'parentMenu',
-      componentProps: { treeData },
-    });
   });
 
-  const getTitle = computed(() => (!unref(isUpdate) ? '新增菜单' : '编辑菜单'));
+  const getTitle = computed(() => (!unref(isUpdate) ? '新增字典数据' : '编辑字典数据'));
 
   const { createMessage } = useMessage();
 
@@ -59,14 +50,14 @@
       const values = await validate();
       setDrawerProps({ confirmLoading: true });
       //修改
-      if (unref(isUpdate)) {
-        await updateMenu(values).then(() => {
-          createMessage.success('修改菜单成功!');
+      if (values.id) {
+        await updateDictData(values).then(() => {
+          createMessage.success('修改数据成功!');
         });
       } else {
         //新增
-        await insertMenu(values).then(() => {
-          createMessage.success('新增菜单成功!');
+        await insertDictData(values).then(() => {
+          createMessage.success('新增数据成功!');
         });
       }
       closeDrawer();

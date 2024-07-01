@@ -8,6 +8,10 @@ enum Api {
   InsertStaff = '/backstage/staff/insertStaff',
   UpdateStaff = '/backstage/staff/updateStaff',
   RemoveStaffById = '/backstage/staff/removeStaffById/',
+  GetSysLogList = '/backstage/staff/getUserLogList',
+  ChangeOperationStatus = '/backstage/staff/changeOperationStatus',
+  GetStaffInfo = '/backstage/staff/getStaffInfo/',
+  ModifyUserPassword = '/backstage/staff/modifyUserPassword',
 }
 
 /**
@@ -63,3 +67,41 @@ export function removeStaffById(params: string) {
     params: params,
   });
 }
+
+/**
+ * @description: 获取用户分页日志列表 api
+ */
+export function getUserLogList(params?) {
+  decodeURIComponent(params);
+  return defHttp.post({
+    url: Api.GetSysLogList,
+    data: params,
+  });
+}
+
+/**
+ * @description: 修改运维状态 api
+ */
+export function ChangeOperationStatus(params) {
+  return defHttp.put({
+    url: Api.ChangeOperationStatus,
+    data: params,
+  });
+}
+
+/**
+ * @description: 获取员工信息 api
+ */
+export function getStaffInfo(params?) {
+  return defHttp.get({
+    url: Api.GetStaffInfo,
+    params: params,
+  });
+}
+
+/**
+ * @description: 修改密码
+ */
+export const modifyUserPassword = (params?) => {
+  return defHttp.put({ url: Api.ModifyUserPassword, data: params });
+};

@@ -2,7 +2,13 @@
   <div>
     <BasicTable @register="registerTable">
       <template #toolbar>
-        <a-button type="primary" @click="handleCreate"> 新增部门 </a-button>
+        <a-button
+          type="primary"
+          @click="handleCreate"
+          v-if="hasPermission(['*', 'system.dept.change'])"
+        >
+          新增部门
+        </a-button>
       </template>
       <template #bodyCell="{ column, record }">
         <template v-if="column.key === 'action'">
@@ -11,6 +17,7 @@
               {
                 icon: 'clarity:note-edit-line',
                 onClick: handleEdit.bind(null, record),
+                auth: ['*', 'system.dept.change'],
               },
               {
                 icon: 'ant-design:delete-outlined',
@@ -20,6 +27,7 @@
                   placement: 'left',
                   confirm: handleDelete.bind(null, record),
                 },
+                auth: ['*', 'system.dept.change'],
               },
             ]"
           />
@@ -33,12 +41,17 @@
   import { BasicTable, useTable, TableAction } from '@/components/Table';
   import { useModal } from '@/components/Modal';
   import DeptModal from './component/DeptModal.vue';
-  import { columns, searchFormSchema } from './dept.data';
+  import { columns, searchFormSchema } from './dept_data';
   import { getDeptTreeList, removeDeptById } from '@/api/system/dept';
   import { useMessage } from '@/hooks/web/useMessage';
+  import { usePermission } from '@/hooks/web/usePermission';
 
   defineOptions({ name: 'Dept' });
 
+  /**
+   * 权限控制
+   */
+  const { hasPermission } = usePermission();
   const [registerModal, { openModal }] = useModal();
   const [registerTable, { reload }] = useTable({
     title: '部门列表',

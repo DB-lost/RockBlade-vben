@@ -4,6 +4,11 @@ import { DescItem } from '@/components/Description';
 
 export const columns: BasicColumn[] = [
   {
+    title: '姓名',
+    dataIndex: 'name',
+    width: 120,
+  },
+  {
     title: '用户名',
     dataIndex: 'username',
     width: 120,

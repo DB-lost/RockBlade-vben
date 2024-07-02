@@ -68,9 +68,9 @@
           {{ t('sys.login.registerButton') }}
         </Button>
       </ACol>
-    </ARow>
+    </ARow>-->
 
-    <Divider class="enter-x">{{ t('sys.login.otherSignIn') }}</Divider>
+    <!--<Divider class="enter-x">{{ t('sys.login.otherSignIn') }}</Divider>
 
     <div class="flex justify-evenly enter-x" :class="`${prefixCls}-sign-in-way`">
       <GithubFilled />
@@ -79,12 +79,16 @@
       <GoogleCircleFilled />
       <TwitterCircleFilled />
     </div>-->
+    <Divider class="enter-x">{{ t('sys.login.otherSignIn') }}</Divider>
+    <div class="flex justify-evenly enter-x" :class="`${prefixCls}-sign-in-way`">
+      <SvgIcon name="wxCp" size="40" @click="setLoginState(LoginStateEnum.WX_CP_LOGIN)" />
+    </div>
   </Form>
 </template>
 <script lang="ts" setup>
   import { reactive, ref, unref, computed } from 'vue';
-
-  import { Form, Input, Button } from 'ant-design-vue';
+  import { SvgIcon } from '@/components/Icon';
+  import { Form, Input, Button, Divider } from 'ant-design-vue';
   import LoginFormTitle from './LoginFormTitle.vue';
 
   import { useI18n } from '@/hooks/web/useI18n';
@@ -94,6 +98,8 @@
   import { LoginStateEnum, useLoginState, useFormRules, useFormValid } from './useLogin';
   import { useDesign } from '@/hooks/web/useDesign';
   import { RSA256Encrypt } from '@/utils/jesncryptKey';
+  import { useRouter } from 'vue-router';
+  import { wxCpLogin } from '@/api/sys/user';
   //import { onKeyStroke } from '@vueuse/core';
 
   const FormItem = Form.Item;
@@ -103,7 +109,7 @@
   const { prefixCls } = useDesign('login');
   const userStore = useUserStore();
 
-  const { getLoginState } = useLoginState();
+  const { setLoginState, getLoginState } = useLoginState();
   const { getFormRules } = useFormRules();
 
   const formRef = ref();
@@ -119,6 +125,39 @@
   //onKeyStroke('Enter', handleLogin);
 
   const getShow = computed(() => unref(getLoginState) === LoginStateEnum.LOGIN);
+
+  const router = useRouter();
+  let wxCode = router.currentRoute.value.query.wxCp;
+  if (wxCode) {
+    //解码并直接登陆
+    wxCpLogin({ code: wxCode }).then(async (res) => {
+      if (res) {
+        try {
+          loading.value = true;
+          const userInfo = await userStore.login({
+            password: res.rsaPassword,
+            username: res.username,
+            mode: 'none', //不要默认的错误提示
+          });
+          if (userInfo) {
+            notification.success({
+              message: t('sys.login.loginSuccessTitle'),
+              description: `${t('sys.login.loginSuccessDesc')}: ${userInfo.realName}`,
+              duration: 3,
+            });
+          }
+        } catch (error) {
+          createErrorModal({
+            title: t('sys.api.errorTip'),
+            content: (error as unknown as Error).message || t('sys.api.networkExceptionMsg'),
+            getContainer: () => document.body.querySelector(`.${prefixCls}`) || document.body,
+          });
+        } finally {
+          loading.value = false;
+        }
+      }
+    });
+  }
 
   async function handleLogin() {
     const data = await validForm();

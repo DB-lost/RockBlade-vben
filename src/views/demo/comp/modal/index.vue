@@ -104,7 +104,7 @@
       // `useModal` not working with dynamic component
       // passing data through `userData` prop
       userData.value = { data: Math.random(), info: 'Info222' };
-      // open the target modal
+      // open-platform-platform the target modal
       modalOpen.value = true;
     });
   }

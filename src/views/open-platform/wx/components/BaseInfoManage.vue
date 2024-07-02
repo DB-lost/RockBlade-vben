@@ -9,9 +9,9 @@
   import { useGo } from '@/hooks/web/usePage';
   import { useRoute } from 'vue-router';
   import { nextTick, reactive, ref } from 'vue';
-  import { getAccountBasicInfo } from '@/api/open/wx';
+  import { getAccountBasicInfo } from '@/api/open-platform/wx';
   import { Description, useDescription } from '@/components/Description';
-  import { baseInfoSchema } from '@/views/open/wx/wxData';
+  import { baseInfoSchema } from '@/views/open-platform/wx/wxData';
 
   const route = useRoute();
   const go = useGo();
@@ -20,7 +20,7 @@
 
   // 页面左侧点击返回链接时的操作
   function goBack() {
-    go('/open/wx');
+    go('/open-platform-platform/wx');
   }
 
   const baseInfoData = reactive({

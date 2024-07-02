@@ -41,6 +41,7 @@
             <RegisterForm />
             <MobileForm />
             <QrCodeForm />
+            <WxCpCodeForm />
           </div>
         </div>
       </div>
@@ -59,6 +60,7 @@
   import MobileForm from './MobileForm.vue';
   import QrCodeForm from './QrCodeForm.vue';
   import RegisterForm from './RegisterForm.vue';
+  import WxCpCodeForm from '@/views/sys/login/WxCpCodeForm.vue';
 
   defineProps({
     sessionTimeout: {

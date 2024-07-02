@@ -1,5 +1,11 @@
 <template>
-  <PageWrapper title="微信开放平台授权" dense contentFullHeight contentClass="flex">
+  <PageWrapper
+    title="微信开放平台授权"
+    dense
+    contentFullHeight
+    contentClass="flex"
+    v-if="hasPermission(['*', 'system.staff.change'])"
+  >
     <BasicTable @register="registerTable">
       <template #toolbar>
         <Button type="primary" @click="handleGetAuth"> 获取授权 </Button>
@@ -38,14 +44,19 @@
 <script setup lang="ts">
   import { PageWrapper } from '@/components/Page';
   import { BasicTable, TableAction, useTable } from '@/components/Table';
-  import { columns } from '@/views/open/wx/wxData';
+  import { columns } from '@/views/open-platform/wx/wxData';
   //import { useMessage } from '@/hooks/web/useMessage';
-  import { getWxOpenAuthPage } from '@/api/open/wx';
+  import { getWxOpenAuthPage } from '@/api/open-platform/wx';
   import { useGo } from '@/hooks/web/usePage';
   import { Avatar, Button, Image } from 'ant-design-vue';
+  import { usePermission } from '@/hooks/web/usePermission';
 
-  defineOptions({ name: 'Wx' });
+  defineOptions({ name: 'WxOpen' });
 
+  /**
+   * 权限控制
+   */
+  const { hasPermission } = usePermission();
   const go = useGo();
   const [registerTable] = useTable({
     api: getWxOpenAuthPage,
@@ -64,7 +75,7 @@
    * 获取授权
    */
   function handleGetAuth() {
-    go('/open/wxAuth');
+    go('/open-platform-platform/wxAuth');
   }
 
   //const { createMessage } = useMessage();
@@ -74,18 +85,18 @@
    * @param record
    */
   function handleView(record: Recordable) {
-    go('/open/wx/app-info/' + record.appId);
+    go('/open-platform-platform/wx/app-info/' + record.appId);
   }
 
   /**
    * 代码管理
    */
   function handleCodeManage() {
-    go('/open/wx/code-manage');
+    go('/open-platform-platform/wx/code-manage');
   }
 
   function handleBaseInfoManage(record: Recordable) {
-    go('/open/wx/base-info-manage/' + record.appId);
+    go('/open-platform-platform/wx/base-info-manage/' + record.appId);
   }
 </script>
 

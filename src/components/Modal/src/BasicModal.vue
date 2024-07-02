@@ -78,12 +78,12 @@
   const props = defineProps(basicProps);
 
   const emit = defineEmits([
-    'open-change',
+    'open-platform-platform-change',
     'height-change',
     'cancel',
     'ok',
     'register',
-    'update:open',
+    'update:open-platform-platform',
     'fullscreen',
   ]);
 
@@ -172,8 +172,8 @@
   watch(
     () => unref(openRef),
     (v) => {
-      emit('open-change', v);
-      emit('update:open', v);
+      emit('open-platform-platform-change', v);
+      emit('update:open-platform-platform', v);
       if (instance && modalMethods.emitOpen) {
         modalMethods.emitOpen(v, instance.uid);
       }

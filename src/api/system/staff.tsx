@@ -12,6 +12,7 @@ enum Api {
   ChangeOperationStatus = '/backstage/staff/changeOperationStatus',
   GetStaffInfo = '/backstage/staff/getStaffInfo/',
   ModifyUserPassword = '/backstage/staff/modifyUserPassword',
+  SyncWxCp = '/backstage/staff/syncWxCp',
 }
 
 /**
@@ -105,3 +106,12 @@ export function getStaffInfo(params?) {
 export const modifyUserPassword = (params?) => {
   return defHttp.put({ url: Api.ModifyUserPassword, data: params });
 };
+
+/**
+ * @description: 同步企业微信 api
+ */
+export function syncWxCp() {
+  return defHttp.put({
+    url: Api.SyncWxCp,
+  });
+}

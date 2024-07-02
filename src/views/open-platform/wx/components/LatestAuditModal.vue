@@ -8,7 +8,7 @@
   import { ref } from 'vue';
   import { BasicModal, useModalInner } from '@/components/Modal';
   import { Description, useDescription } from '@/components/Description';
-  import { auditSchema } from '@/views/open/wx/wxData';
+  import { auditSchema } from '@/views/open-platform/wx/wxData';
 
   const auditData = ref({});
 

@@ -12,7 +12,7 @@ export const columns: BasicColumn[] = [
   {
     title: '排序',
     dataIndex: 'orderNo',
-    width: 50,
+    width: 150,
   },
   {
     title: '状态',

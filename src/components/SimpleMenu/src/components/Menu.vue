@@ -42,7 +42,7 @@
     },
   });
 
-  const emit = defineEmits(['select', 'open-change']);
+  const emit = defineEmits(['select', 'open-platform-platform-change']);
 
   const rootMenuEmitter = mitt<MenuEmitterEvents>();
   const instance = getCurrentInstance();

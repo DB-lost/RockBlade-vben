@@ -31,9 +31,9 @@
         },
         {
           label: 'Open',
-          icon: 'bx:bxs-folder-open',
+          icon: 'bx:bxs-folder-open-platform-platform',
           handler: () => {
-            createMessage.success('click open');
+            createMessage.success('click open-platform-platform');
           },
         },
       ],

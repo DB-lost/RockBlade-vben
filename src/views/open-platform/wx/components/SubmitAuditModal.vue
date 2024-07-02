@@ -1,14 +1,14 @@
 <template>
-  <BasicModal v-bind="$attrs" title="添加到模板库" @register="register" @ok="handleSubmit">
+  <BasicModal v-bind="$attrs" title="提交代码并生成体验版" @register="register" @ok="handleSubmit">
     <BasicForm @register="registerForm" />
   </BasicModal>
 </template>
 <script lang="ts" setup>
-  import { BasicModal, useModalInner } from '@/components/Modal';
   import { BasicForm, useForm } from '@/components/Form';
-  import { templateTypeFormSchema } from '@/views/open/wx/wxData';
-  import { addToTemplate } from '@/api/open/wx';
+  import { BasicModal, useModalInner } from '@/components/Modal';
   import { useMessage } from '@/hooks/web/useMessage';
+  import { submitAuditFormSchema } from '@/views/open-platform/wx/wxData';
+  import { submitAudit } from '@/api/open-platform/wx';
 
   /**
    * 消息提醒
@@ -18,7 +18,7 @@
   const [register, { closeModal, setModalProps }] = useModalInner(async (data) => {
     await resetFields();
     await setFieldsValue({
-      ...data.record,
+      ...data.data,
     });
   });
 
@@ -27,7 +27,7 @@
    */
   const [registerForm, { resetFields, setFieldsValue, validate }] = useForm({
     labelWidth: 120,
-    schemas: templateTypeFormSchema,
+    schemas: submitAuditFormSchema,
     showActionButtonGroup: false,
   });
 
@@ -38,8 +38,8 @@
     try {
       const data = await validate();
       setModalProps({ confirmLoading: true });
-      await addToTemplate(data).then(() => {
-        createMessage.success('添加成功');
+      submitAudit(data).then(() => {
+        createMessage.success('提交成功');
         closeModal();
       });
     } finally {

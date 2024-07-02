@@ -113,13 +113,13 @@
     release,
     speedupCodeAudit,
     undoAudit,
-  } from '@/api/open/wx';
-  import { draftsColumns, templateColumns } from '@/views/open/wx/wxData';
-  import TemplateTypeModal from '@/views/open/wx/components/TemplateTypeModal.vue';
+  } from '@/api/open-platform/wx';
+  import { draftsColumns, templateColumns } from '@/views/open-platform/wx/wxData';
+  import TemplateTypeModal from '@/views/open-platform/wx/components/TemplateTypeModal.vue';
   import { BasicModal, useModal } from '@/components/Modal';
   import { useMessage } from '@/hooks/web/useMessage';
-  import SubmitAuditModal from '@/views/open/wx/components/SubmitAuditModal.vue';
-  import LatestAuditModal from '@/views/open/wx/components/LatestAuditModal.vue';
+  import SubmitAuditModal from '@/views/open-platform/wx/components/SubmitAuditModal.vue';
+  import LatestAuditModal from '@/views/open-platform/wx/components/LatestAuditModal.vue';
 
   defineComponent({ name: 'CodeManage' });
 
@@ -127,7 +127,7 @@
 
   // 页面左侧点击返回链接时的操作
   function goBack() {
-    go('/open/wx');
+    go('/open-platform-platform/wx');
   }
 
   const currentKey = ref('template');

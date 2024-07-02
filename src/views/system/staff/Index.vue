@@ -9,6 +9,9 @@
           v-if="hasPermission(['*', 'system.staff.change'])"
           >新增账号</Button
         >
+        <Button type="primary" danger @click="handleSyncWxCp" v-if="hasPermission(['*'])">
+          同步企业微信
+        </Button>
       </template>
       <template #bodyCell="{ column, record }">
         <template v-if="column.key === 'action'">
@@ -55,7 +58,8 @@
   import { Button } from 'ant-design-vue';
   import { columns, searchFormSchema } from './staff_data';
   import { useGo } from '@/hooks/web/usePage';
-  import { getStaffPage, removeStaffById } from '@/api/system/staff';
+  import { getStaffPage, removeStaffById, syncWxCp } from '@/api/system/staff';
+  import { useMessage } from '@/hooks/web/useMessage';
 
   defineOptions({ name: 'Staff' });
 
@@ -118,5 +122,17 @@
 
   function handleView(record: Recordable) {
     go('/system/staff_detail/' + record.id);
+  }
+
+  const { createMessage } = useMessage();
+
+  /**
+   * 同步企业微信
+   */
+  function handleSyncWxCp() {
+    syncWxCp().then(() => {
+      createMessage.success('同步员工成功!');
+      reload();
+    });
   }
 </script>

@@ -1,5 +1,5 @@
 import { defHttp } from '@/utils/http/axios';
-import { AppInfo, BaseInfo } from '@/api/open/model/WxModel';
+import { AppInfo, BaseInfo } from '@/api/open-platform/model/WxModel';
 
 enum Api {
   GetWxOpenAuthPage = '/backstage/wxOpen/getWxOpenAuthPage',

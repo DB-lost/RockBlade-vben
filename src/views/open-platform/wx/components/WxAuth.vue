@@ -18,7 +18,7 @@
   import { useDesign } from '@/hooks/web/useDesign';
   import { useWindowSizeFn } from '@vben/hooks';
   import { Spin } from 'ant-design-vue';
-  import { getAuthorizedLink } from '@/api/open/wx';
+  import { getAuthorizedLink } from '@/api/open-platform/wx';
   import { PageWrapper } from '@/components/Page';
   import { useGo } from '@/hooks/web/usePage';
 
@@ -49,7 +49,7 @@
    */
   function goBack() {
     // 本例的效果时点击返回始终跳转到账号列表页，实际应用时可返回上一页
-    go('/open/wx');
+    go('/open-platform-platform/wx');
   }
 
   const getWrapStyle = computed((): CSSProperties => {

@@ -19,6 +19,7 @@
       [LoginStateEnum.REGISTER]: t('sys.login.signUpFormTitle'),
       [LoginStateEnum.MOBILE]: t('sys.login.mobileSignInFormTitle'),
       [LoginStateEnum.QR_CODE]: t('sys.login.qrSignInFormTitle'),
+      [LoginStateEnum.WX_CP_LOGIN]: '企业微信登录',
     };
     return titleObj[unref(getLoginState)];
   });

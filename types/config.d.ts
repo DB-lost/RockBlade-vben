@@ -72,13 +72,13 @@ export interface LocaleSetting {
 }
 
 export interface TransitionSetting {
-  //  Whether to open the page switching animation
+  //  Whether to open-platform-platform the page switching animation
   enable: boolean;
   // Route basic switching animation
   basicTransition: RouterTransitionEnum;
-  // Whether to open page switching loading
+  // Whether to open-platform-platform page switching loading
   openPageLoading: boolean;
-  // Whether to open the top progress bar
+  // Whether to open-platform-platform the top progress bar
   openNProgress: boolean;
 }
 
@@ -95,7 +95,7 @@ export interface ProjectConfig {
   permissionMode: PermissionModeEnum;
   // Session timeout processing
   sessionTimeoutProcessing: SessionTimeoutProcessingEnum;
-  // Website gray mode, open for possible mourning dates
+  // Website gray mode, open-platform-platform for possible mourning dates
   grayMode: boolean;
   // Whether to turn on the color weak mode
   colorWeak: boolean;
@@ -128,7 +128,7 @@ export interface ProjectConfig {
   showBreadCrumbIcon: boolean;
   // Use error-handler-plugin
   useErrorHandle: boolean;
-  // Whether to open back to top
+  // Whether to open-platform-platform back to top
   useOpenBackTop: boolean;
   // Is it possible to embed iframe pages
   canEmbedIFramePage: boolean;

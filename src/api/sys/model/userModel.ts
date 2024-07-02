@@ -36,3 +36,11 @@ export interface GetUserInfoModel {
   // 介绍
   desc?: string;
 }
+
+/**
+ * 企微登录返回
+ */
+export interface WxCpLoginVo {
+  username: string;
+  rsaPassword: string;
+}

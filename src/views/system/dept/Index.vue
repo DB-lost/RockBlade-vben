@@ -2,13 +2,16 @@
   <div>
     <BasicTable @register="registerTable">
       <template #toolbar>
-        <a-button
+        <Button
           type="primary"
           @click="handleCreate"
           v-if="hasPermission(['*', 'system.dept.change'])"
         >
           新增部门
-        </a-button>
+        </Button>
+        <Button type="primary" danger @click="handleSyncWxCp" v-if="hasPermission(['*'])">
+          同步企业微信
+        </Button>
       </template>
       <template #bodyCell="{ column, record }">
         <template v-if="column.key === 'action'">
@@ -42,9 +45,10 @@
   import { useModal } from '@/components/Modal';
   import DeptModal from './component/DeptModal.vue';
   import { columns, searchFormSchema } from './dept_data';
-  import { getDeptTreeList, removeDeptById } from '@/api/system/dept';
+  import { getDeptTreeList, removeDeptById, syncWxCp } from '@/api/system/dept';
   import { useMessage } from '@/hooks/web/useMessage';
   import { usePermission } from '@/hooks/web/usePermission';
+  import { Button } from 'ant-design-vue';
 
   defineOptions({ name: 'Dept' });
 
@@ -94,12 +98,22 @@
 
   function handleDelete(record: Recordable) {
     removeDeptById(record.id).then(() => {
-      createMessage.success('删除菜单成功!');
+      createMessage.success('删除部门成功!');
       reload();
     });
   }
 
   function handleSuccess() {
     reload();
+  }
+
+  /**
+   * 同步企业微信
+   */
+  function handleSyncWxCp() {
+    syncWxCp().then(() => {
+      createMessage.success('同步部门成功!');
+      reload();
+    });
   }
 </script>

@@ -13,6 +13,7 @@ export enum LoginStateEnum {
   RESET_PASSWORD,
   MOBILE,
   QR_CODE,
+  WX_CP_LOGIN,
 }
 
 const currentState = ref(LoginStateEnum.LOGIN);

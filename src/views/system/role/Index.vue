@@ -1,6 +1,6 @@
 <template>
   <div>
-    <BasicTable @register="registerTable" v-if="hasPermission(['*', 'system.menu.list'])">
+    <BasicTable @register="registerTable" v-if="hasPermission(['*', 'system.role.list'])">
       <template #toolbar>
         <a-button type="primary" @click="handleCreate"> 新增角色 </a-button>
       </template>

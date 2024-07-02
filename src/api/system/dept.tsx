@@ -5,6 +5,7 @@ enum Api {
   InsertDept = '/backstage/dept/insertDept',
   UpdateDept = '/backstage/dept/updateDept',
   RemoveDeptById = '/backstage/dept/removeDeptById/',
+  SyncWxCp = '/backstage/dept/syncWxCp',
 }
 
 /**
@@ -41,5 +42,14 @@ export function removeDeptById(params: string) {
   return defHttp.delete({
     url: Api.RemoveDeptById,
     params: params,
+  });
+}
+
+/**
+ * @description: 同步企业微信 api
+ */
+export function syncWxCp() {
+  return defHttp.put({
+    url: Api.SyncWxCp,
   });
 }

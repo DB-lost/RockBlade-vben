@@ -7,10 +7,10 @@
   import { nextTick, reactive, ref } from 'vue';
   import { PageWrapper } from '@/components/Page';
   import { Description, useDescription } from '@/components/Description';
-  import { getAppInfo } from '@/api/open/wx';
+  import { getAppInfo } from '@/api/open-platform/wx';
   import { useRoute } from 'vue-router';
   import { useGo } from '@/hooks/web/usePage';
-  import { appletInfoSchema } from '@/views/open/wx/wxData';
+  import { appletInfoSchema } from '@/views/open-platform/wx/wxData';
 
   defineOptions({ name: 'AppletInfo' });
 
@@ -62,6 +62,6 @@
 
   // 页面左侧点击返回链接时的操作
   function goBack() {
-    go('/open/wx');
+    go('/open-platform-platform/wx');
   }
 </script>

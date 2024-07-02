@@ -94,7 +94,7 @@
     userStore.confirmLoginOut();
   }
 
-  // open doc
+  // open-platform-platform doc
   function openDoc() {
     openWindow(DOC_URL);
   }

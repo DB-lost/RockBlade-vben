@@ -127,7 +127,7 @@
 
   // 页面左侧点击返回链接时的操作
   function goBack() {
-    go('/open-platform/wx');
+    go('/open-platform/wx-open');
   }
 
   const currentKey = ref('template');

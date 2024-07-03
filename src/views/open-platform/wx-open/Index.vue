@@ -4,7 +4,7 @@
     dense
     contentFullHeight
     contentClass="flex"
-    v-if="hasPermission(['*', 'open-platform.wx.list'])"
+    v-if="hasPermission(['*', 'open-platform.wx-open.list'])"
   >
     <BasicTable @register="registerTable">
       <template #toolbar>
@@ -85,7 +85,7 @@
    * @param record
    */
   function handleView(record: Recordable) {
-    go('/open-platform-/wx-open/app-info/' + record.appId);
+    go('/open-platform/wx-open/applet-info/' + record.appId);
   }
 
   /**

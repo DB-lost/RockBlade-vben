@@ -23,7 +23,7 @@ export function useTabs(_router?: Router) {
     const { show } = appStore.getMultiTabsSetting;
     if (!show) {
       throw new Error(
-        'The multi-tab page is currently not open-platform-platform, please open-platform-platform it in the settings！',
+        'The multi-tab page is currently not open, please open-platform-platform it in the settings！',
       );
     }
     return !!show;

@@ -1,6 +1,6 @@
 ports:
   - port: 3344
-    onOpen: open-platform-platform-preview
+    onOpen: open-preview
 tasks:
   - init: pnpm install
     command: pnpm run dev

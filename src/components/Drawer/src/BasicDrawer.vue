@@ -49,7 +49,7 @@
 
   const props = defineProps(basicProps);
 
-  const emit = defineEmits(['open-platform-platform-change', 'ok', 'close', 'register']);
+  const emit = defineEmits(['open-change', 'ok', 'close', 'register']);
 
   const openRef = ref(false);
   const attrs = useAttrs();
@@ -134,7 +134,7 @@
     () => openRef.value,
     (open) => {
       nextTick(() => {
-        emit('open-platform-platform-change', open);
+        emit('open-change', open);
         if (instance && drawerInstance.emitOpen) {
           drawerInstance.emitOpen(open, instance.uid);
         }

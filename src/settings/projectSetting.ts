@@ -38,7 +38,7 @@ const setting: ProjectConfig = {
   // color
   themeColor: APP_PRESET_COLOR_LIST[0],
 
-  // Website gray mode, open-platform-platform for possible mourning dates
+  // Website gray mode, open for possible mourning dates
   grayMode: false,
 
   // Color Weakness Mode
@@ -141,18 +141,18 @@ const setting: ProjectConfig = {
 
   // Transition Setting
   transitionSetting: {
-    //  Whether to open-platform-platform the page switching animation
+    //  Whether to open the page switching animation
     // The disabled state will also disable pageLoading
     enable: true,
 
     // Route basic switching animation
     basicTransition: RouterTransitionEnum.FADE_SIDE,
 
-    // Whether to open-platform-platform page switching loading
-    // Only open-platform-platform when enable=true
+    // Whether to open page switching loading
+    // Only open when enable=true
     openPageLoading: true,
 
-    // Whether to open-platform-platform the top progress bar
+    // Whether to open the top progress bar
     openNProgress: false,
   },
 
@@ -171,7 +171,7 @@ const setting: ProjectConfig = {
   // Use error-handler-plugin
   useErrorHandle: false,
 
-  // Whether to open-platform-platform back to top
+  // Whether to open back to top
   useOpenBackTop: true,
 
   //  Is it possible to embed iframe pages

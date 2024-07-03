@@ -6,8 +6,8 @@
 <script lang="ts" setup>
   import { BasicModal, useModalInner } from '@/components/Modal';
   import { BasicForm, useForm } from '@/components/Form';
-  import { templateTypeFormSchema } from '@/views/open-platform/wx/wxData';
-  import { addToTemplate } from '@/api/open-platform/wx';
+  import { templateTypeFormSchema } from '@/views/open-platform/wx-open/wxData';
+  import { addToTemplate } from '@/api/open-platform/wx-open';
   import { useMessage } from '@/hooks/web/useMessage';
 
   /**

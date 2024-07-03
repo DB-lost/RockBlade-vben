@@ -4,7 +4,7 @@
     dense
     contentFullHeight
     contentClass="flex"
-    v-if="hasPermission(['*', 'system.staff.change'])"
+    v-if="hasPermission(['*', 'open-platform.wx.list'])"
   >
     <BasicTable @register="registerTable">
       <template #toolbar>
@@ -44,9 +44,9 @@
 <script setup lang="ts">
   import { PageWrapper } from '@/components/Page';
   import { BasicTable, TableAction, useTable } from '@/components/Table';
-  import { columns } from '@/views/open-platform/wx/wxData';
+  import { columns } from '@/views/open-platform/wx-open/wxData';
   //import { useMessage } from '@/hooks/web/useMessage';
-  import { getWxOpenAuthPage } from '@/api/open-platform/wx';
+  import { getWxOpenAuthPage } from '@/api/open-platform/wx-open';
   import { useGo } from '@/hooks/web/usePage';
   import { Avatar, Button, Image } from 'ant-design-vue';
   import { usePermission } from '@/hooks/web/usePermission';
@@ -75,7 +75,7 @@
    * 获取授权
    */
   function handleGetAuth() {
-    go('/open-platform-platform/wxAuth');
+    go('/open-platform/wxAuth');
   }
 
   //const { createMessage } = useMessage();
@@ -85,18 +85,18 @@
    * @param record
    */
   function handleView(record: Recordable) {
-    go('/open-platform-platform/wx/app-info/' + record.appId);
+    go('/open-platform-/wx-open/app-info/' + record.appId);
   }
 
   /**
    * 代码管理
    */
   function handleCodeManage() {
-    go('/open-platform-platform/wx/code-manage');
+    go('/open-platform/wx-open/code-manage');
   }
 
   function handleBaseInfoManage(record: Recordable) {
-    go('/open-platform-platform/wx/base-info-manage/' + record.appId);
+    go('/open-platform/wx-open/base-info-manage/' + record.appId);
   }
 </script>
 

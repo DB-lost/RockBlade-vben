@@ -78,7 +78,7 @@
         handler: () => {
           console.log('点击了删除', node);
         },
-        icon: 'bx:bxs-folder-open-platform-platform',
+        icon: 'bx:bxs-folder-open',
       },
     ];
     return new Promise((resolve) => {

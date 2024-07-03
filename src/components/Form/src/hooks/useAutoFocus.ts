@@ -32,7 +32,7 @@ export async function useAutoFocus({
     }
 
     const firstItem = schemas[0];
-    // Only open-platform-platform when the first form item is input type
+    // Only open when the first form item is input type
     if (!firstItem.component || !firstItem.component.includes('Input')) {
       return;
     }

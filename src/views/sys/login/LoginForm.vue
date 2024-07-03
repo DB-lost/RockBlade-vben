@@ -24,8 +24,17 @@
         :placeholder="t('sys.login.password')"
       />
     </FormItem>
-
-    <!--<ARow class="enter-x">
+    <Row class="enter-x">
+      <Col :span="12" />
+      <Col :span="12">
+        <FormItem :style="{ 'text-align': 'right' }">
+          <Button type="link" size="small" @click="handlerGetWxCpAuth">
+            {{ '企微注册' }}
+          </Button>
+        </FormItem>
+      </Col>
+    </Row>
+    <!--
       <ACol :span="12">
         <FormItem>
           &lt;!&ndash; No logic, you need to deal with it yourself &ndash;&gt;
@@ -34,16 +43,7 @@
           </Checkbox>
         </FormItem>
       </ACol>
-      <ACol :span="12">
-        <FormItem :style="{ 'text-align': 'right' }">
-          &lt;!&ndash; No logic, you need to deal with it yourself &ndash;&gt;
-          <Button type="link" size="small" @click="setLoginState(LoginStateEnum.RESET_PASSWORD)">
-            {{ t('sys.login.forgetPassword') }}
-          </Button>
-        </FormItem>
-      </ACol>
-    </ARow>-->
-
+    -->
     <FormItem class="enter-x">
       <Button type="primary" size="large" block @click="handleLogin" :loading="loading">
         {{ t('sys.login.loginButton') }}
@@ -86,9 +86,9 @@
   </Form>
 </template>
 <script lang="ts" setup>
-  import { reactive, ref, unref, computed } from 'vue';
+  import { reactive, ref, unref, computed, nextTick } from 'vue';
   import { SvgIcon } from '@/components/Icon';
-  import { Form, Input, Button, Divider } from 'ant-design-vue';
+  import { Form, Input, Button, Divider, Row, Col } from 'ant-design-vue';
   import LoginFormTitle from './LoginFormTitle.vue';
 
   import { useI18n } from '@/hooks/web/useI18n';
@@ -98,8 +98,7 @@
   import { LoginStateEnum, useLoginState, useFormRules, useFormValid } from './useLogin';
   import { useDesign } from '@/hooks/web/useDesign';
   import { RSA256Encrypt } from '@/utils/jesncryptKey';
-  import { useRouter } from 'vue-router';
-  import { wxCpLogin } from '@/api/sys/user';
+  import { getWxCpAuth } from '@/api/sys/user';
   //import { onKeyStroke } from '@vueuse/core';
 
   const FormItem = Form.Item;
@@ -126,39 +125,6 @@
 
   const getShow = computed(() => unref(getLoginState) === LoginStateEnum.LOGIN);
 
-  const router = useRouter();
-  let wxCode = router.currentRoute.value.query.wxCp;
-  if (wxCode) {
-    //解码并直接登陆
-    wxCpLogin({ code: wxCode }).then(async (res) => {
-      if (res) {
-        try {
-          loading.value = true;
-          const userInfo = await userStore.login({
-            password: res.rsaPassword,
-            username: res.username,
-            mode: 'none', //不要默认的错误提示
-          });
-          if (userInfo) {
-            notification.success({
-              message: t('sys.login.loginSuccessTitle'),
-              description: `${t('sys.login.loginSuccessDesc')}: ${userInfo.realName}`,
-              duration: 3,
-            });
-          }
-        } catch (error) {
-          createErrorModal({
-            title: t('sys.api.errorTip'),
-            content: (error as unknown as Error).message || t('sys.api.networkExceptionMsg'),
-            getContainer: () => document.body.querySelector(`.${prefixCls}`) || document.body,
-          });
-        } finally {
-          loading.value = false;
-        }
-      }
-    });
-  }
-
   async function handleLogin() {
     const data = await validForm();
     if (!data) return;
@@ -167,6 +133,7 @@
       const userInfo = await userStore.login({
         password: RSA256Encrypt(data.password),
         username: data.account,
+        code: undefined,
         mode: 'none', //不要默认的错误提示
       });
       if (userInfo) {
@@ -186,4 +153,57 @@
       loading.value = false;
     }
   }
+
+  /**
+   *获取企微授权
+   */
+  function handlerGetWxCpAuth() {
+    getWxCpAuth().then((res) => {
+      location.href = res as unknown as string;
+    });
+  }
+
+  /**
+   * 截取需要的字符串
+   * @param name
+   * @constructor
+   */
+  function GetQueryString(name: string) {
+    const reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+    let r = window.location.search.substr(1).match(reg); //获取url中"?"符后的字符串并正则匹配
+    let context = '';
+    if (r != null) context = r[2];
+    r = null;
+    return context == null || context == '' || context == 'undefined' ? '' : context;
+  }
+
+  nextTick(async () => {
+    const code = GetQueryString('code');
+    if (code) {
+      try {
+        loading.value = true;
+        const userInfo = await userStore.wxCpRegister({
+          code: code,
+          username: undefined,
+          password: undefined,
+          mode: 'none', //不要默认的错误提示
+        });
+        if (userInfo) {
+          notification.success({
+            message: t('sys.login.loginSuccessTitle'),
+            description: `${t('sys.login.loginSuccessDesc')}: ${userInfo.realName}`,
+            duration: 3,
+          });
+        }
+      } catch (error) {
+        createErrorModal({
+          title: t('sys.api.errorTip'),
+          content: (error as unknown as Error).message || t('sys.api.networkExceptionMsg'),
+          getContainer: () => document.body.querySelector(`.${prefixCls}`) || document.body,
+        });
+      } finally {
+        loading.value = false;
+      }
+    }
+  });
 </script>

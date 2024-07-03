@@ -1,5 +1,5 @@
 import { defHttp } from '@/utils/http/axios';
-import { LoginParams, LoginResultModel, GetUserInfoModel, WxCpLoginVo } from './model/userModel';
+import { LoginParams, LoginResultModel, GetUserInfoModel } from './model/userModel';
 
 import { ErrorMessageMode } from '#/axios';
 
@@ -9,8 +9,9 @@ enum Api {
   GetUserInfo = '/backstage/getUserInfo',
   GetPermCode = '/backstage/getPermCode',
   TestRetry = '/testRetry',
-  GetWxCpQrcode = '/backstage/getWxCpQrcode',
-  WxCpLogin = '/backstage/wxCpLogin',
+  GetWxCpAuth = '/backstage/wxCp/getWxCpAuth',
+  WxCpLogin = '/backstage/wxCp/wxCpLogin',
+  WxCpRegister = '/backstage/wxCp/wxCpRegister',
 }
 
 /**
@@ -59,13 +60,20 @@ export function testRetry() {
 /**
  * 获取企业微信二维码
  */
-export function getWxCpQrcode() {
-  return defHttp.get({ url: Api.GetWxCpQrcode });
+export function getWxCpAuth() {
+  return defHttp.get({ url: Api.GetWxCpAuth });
 }
 
 /**
  * 企业微信登录
  */
-export function wxCpLogin(params) {
-  return defHttp.get<WxCpLoginVo>({ url: Api.WxCpLogin, params: params });
+export function wxCpLoginApi(params) {
+  return defHttp.get<LoginResultModel>({ url: Api.WxCpLogin, params: params });
+}
+
+/**
+ * 根据企微注册
+ */
+export function wxCpRegisterApi(params) {
+  return defHttp.get<LoginResultModel>({ url: Api.WxCpRegister, params: params });
 }

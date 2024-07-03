@@ -2,8 +2,9 @@
  * @description: Login interface parameters
  */
 export interface LoginParams {
-  username: string;
-  password: string | boolean;
+  username: string | undefined;
+  password: string | boolean | undefined;
+  code: any | undefined;
 }
 
 export interface RoleInfo {
@@ -35,12 +36,4 @@ export interface GetUserInfoModel {
   avatar: string;
   // 介绍
   desc?: string;
-}
-
-/**
- * 企微登录返回
- */
-export interface WxCpLoginVo {
-  username: string;
-  rsaPassword: string;
 }

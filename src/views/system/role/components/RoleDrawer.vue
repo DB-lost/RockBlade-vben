@@ -65,6 +65,9 @@
     try {
       const values = await validate();
       setDrawerProps({ confirmLoading: true });
+      if (!(values.menuIds instanceof Array)) {
+        values.menuIds = values.menuIds.checked;
+      }
       //修改
       if (unref(isUpdate)) {
         await updateRole(values).then(() => {

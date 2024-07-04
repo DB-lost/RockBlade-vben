@@ -6,8 +6,19 @@ import { RoleEnum } from '@/enums/roleEnum';
 import { PageEnum } from '@/enums/pageEnum';
 import { ROLES_KEY, TOKEN_KEY, USER_INFO_KEY } from '@/enums/cacheEnum';
 import { getAuthCache, setAuthCache } from '@/utils/auth';
-import { GetUserInfoModel, LoginParams } from '@/api/sys/model/userModel';
-import { doLogout, getUserInfo, loginApi, wxCpLoginApi, wxCpRegisterApi } from '@/api/sys/user';
+import {
+  GetUserInfoModel,
+  LoginParams,
+  RegisterParams,
+  WxCpLoginParams,
+} from '@/api/sys/model/userModel';
+import {
+  doLogout,
+  getUserInfo,
+  loginApi,
+  wxCpLoginApi,
+  wxCpStaffRegisterApi,
+} from '@/api/sys/user';
 import { useI18n } from '@/hooks/web/useI18n';
 import { useMessage } from '@/hooks/web/useMessage';
 import { router } from '@/router';
@@ -105,14 +116,14 @@ export const useUserStore = defineStore({
      * @description: 企业微信登录
      */
     async wxCpLogin(
-      params: LoginParams & {
+      params: WxCpLoginParams & {
         goHome?: boolean;
         mode?: ErrorMessageMode;
       },
     ): Promise<GetUserInfoModel | null> {
       try {
-        const { goHome = true, mode, ...loginParams } = params;
-        const data = await wxCpLoginApi(loginParams);
+        const { goHome = true, mode, ...wxCpLoginParams } = params;
+        const data = await wxCpLoginApi(wxCpLoginParams);
         const { token } = data;
         // save token
         this.setToken(token);
@@ -125,15 +136,15 @@ export const useUserStore = defineStore({
     /**
      * @description: 企业微信登录
      */
-    async wxCpRegister(
-      params: LoginParams & {
+    async wxCpStaffRegister(
+      params: RegisterParams & {
         goHome?: boolean;
         mode?: ErrorMessageMode;
       },
     ): Promise<GetUserInfoModel | null> {
       try {
-        const { goHome = true, mode, ...loginParams } = params;
-        const data = await wxCpRegisterApi(loginParams);
+        const { goHome = true, mode, ...registerParams } = params;
+        const data = await wxCpStaffRegisterApi(registerParams);
         const { token } = data;
         // save token
         this.setToken(token);

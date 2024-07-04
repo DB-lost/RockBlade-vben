@@ -11,7 +11,7 @@ enum Api {
   TestRetry = '/testRetry',
   GetWxCpAuth = '/backstage/wxCp/getWxCpAuth',
   WxCpLogin = '/backstage/wxCp/wxCpLogin',
-  WxCpRegister = '/backstage/wxCp/wxCpRegister',
+  WxCpStaffRegister = '/backstage/wxCp/wxCpStaffRegister',
 }
 
 /**
@@ -74,6 +74,6 @@ export function wxCpLoginApi(params) {
 /**
  * 根据企微注册
  */
-export function wxCpRegisterApi(params) {
-  return defHttp.get<LoginResultModel>({ url: Api.WxCpRegister, params: params });
+export function wxCpStaffRegisterApi(params) {
+  return defHttp.post<LoginResultModel>({ url: Api.WxCpStaffRegister, data: params });
 }

@@ -6,6 +6,7 @@ enum Api {
   UpdateDept = '/backstage/dept/updateDept',
   RemoveDeptById = '/backstage/dept/removeDeptById/',
   SyncWxCp = '/backstage/dept/syncWxCp',
+  GetStaffList = '/backstage/dept/getStaffList',
 }
 
 /**
@@ -53,3 +54,10 @@ export function syncWxCp() {
     url: Api.SyncWxCp,
   });
 }
+
+/**
+ * @description: 获取员工列表
+ */
+export const getStaffList = (params?) => {
+  return defHttp.get({ url: Api.GetStaffList, params: params });
+};

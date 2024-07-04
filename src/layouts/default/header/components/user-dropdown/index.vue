@@ -11,7 +11,7 @@
 
     <template #overlay>
       <Menu @click="handleMenuClick">
-        <MenuItem
+        <!--<MenuItem
           key="doc"
           :text="t('layout.header.dropdownItemDoc')"
           icon="ion:document-text-outline"
@@ -23,7 +23,8 @@
           key="api"
           :text="t('layout.header.dropdownChangeApi')"
           icon="ant-design:swap-outlined"
-        />
+        />-->
+        <MenuItem key="modifyPassword" :text="'修改密码'" icon="ant-design:swap-outlined" />
         <MenuItem
           v-if="getUseLockPage"
           key="lock"
@@ -40,6 +41,7 @@
   </Dropdown>
   <LockAction @register="register" />
   <ChangeApi @register="registerApi" />
+  <ModifyPasswordDrawer @register="registerModifyPassword" />
 </template>
 <script lang="ts" setup>
   import { Dropdown, Menu } from 'ant-design-vue';
@@ -55,8 +57,10 @@
   import { propTypes } from '@/utils/propTypes';
   import { openWindow } from '@/utils';
   import { createAsyncComponent } from '@/utils/factory/createAsyncComponent';
+  import { useDrawer } from '@/components/Drawer';
+  import ModifyPasswordDrawer from '@/views/system/staff/components/ModifyPasswordDrawer.vue';
 
-  type MenuEvent = 'logout' | 'doc' | 'lock' | 'api';
+  type MenuEvent = 'logout' | 'doc' | 'lock' | 'api' | 'modifyPassword';
 
   const MenuItem = createAsyncComponent(() => import('./DropMenuItem.vue'));
   const LockAction = createAsyncComponent(() => import('../lock/LockModal.vue'));
@@ -70,7 +74,7 @@
 
   const { prefixCls } = useDesign('header-user-dropdown');
   const { t } = useI18n();
-  const { getShowDoc, getUseLockPage, getShowApi } = useHeaderSetting();
+  const { getUseLockPage } = useHeaderSetting();
   const userStore = useUserStore();
 
   const getUserInfo = computed(() => {
@@ -113,7 +117,19 @@
       case 'api':
         handleApi();
         break;
+      case 'modifyPassword':
+        handleModifyPassword();
+        break;
     }
+  }
+
+  const [registerModifyPassword, { openDrawer }] = useDrawer();
+
+  /**
+   * 修改密码
+   */
+  function handleModifyPassword() {
+    openDrawer();
   }
 </script>
 <style lang="less">

@@ -180,30 +180,7 @@
   nextTick(async () => {
     const code = GetQueryString('code');
     if (code) {
-      try {
-        loading.value = true;
-        const userInfo = await userStore.wxCpRegister({
-          code: code,
-          username: undefined,
-          password: undefined,
-          mode: 'none', //不要默认的错误提示
-        });
-        if (userInfo) {
-          notification.success({
-            message: t('sys.login.loginSuccessTitle'),
-            description: `${t('sys.login.loginSuccessDesc')}: ${userInfo.realName}`,
-            duration: 3,
-          });
-        }
-      } catch (error) {
-        createErrorModal({
-          title: t('sys.api.errorTip'),
-          content: (error as unknown as Error).message || t('sys.api.networkExceptionMsg'),
-          getContainer: () => document.body.querySelector(`.${prefixCls}`) || document.body,
-        });
-      } finally {
-        loading.value = false;
-      }
+      setLoginState(LoginStateEnum.REGISTER);
     }
   });
 </script>

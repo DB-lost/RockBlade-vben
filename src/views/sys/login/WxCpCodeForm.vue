@@ -44,8 +44,6 @@
           loading.value = true;
           const userInfo = await userStore.wxCpLogin({
             code: code,
-            username: undefined,
-            password: undefined,
             mode: 'none', //不要默认的错误提示
           });
           if (userInfo) {

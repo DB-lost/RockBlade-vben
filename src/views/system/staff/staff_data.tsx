@@ -361,13 +361,6 @@ export const refundSchema: DescItem[] = [
  */
 export const modifyPasswordSchema: FormSchema[] = [
   {
-    field: 'userId',
-    label: 'userId',
-    component: 'Input',
-    colProps: { span: 8 },
-    show: false,
-  },
-  {
     field: 'oldPassword',
     label: '旧密码',
     component: 'InputPassword',

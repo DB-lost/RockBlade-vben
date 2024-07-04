@@ -1,6 +1,7 @@
 import { BasicColumn, FormSchema } from '@/components/Table';
 import { h } from 'vue';
 import { Tag } from 'ant-design-vue';
+import { getDeptTreeList, getStaffList } from '@/api/system/dept';
 
 export const columns: BasicColumn[] = [
   {
@@ -74,18 +75,11 @@ export const formSchema: FormSchema[] = [
   {
     field: 'parentId',
     label: '上级部门',
-    component: 'TreeSelect',
-    ifShow({ values }) {
-      const { deptName, parentDept } = values;
-      // Hide without a parentDept when editing
-      return parentDept || (!deptName && !parentDept);
-    },
+    component: 'ApiTreeSelect',
     componentProps: {
-      fieldNames: {
-        label: 'deptName',
-        value: 'id',
-      },
-      getPopupContainer: () => document.body,
+      api: getDeptTreeList,
+      labelField: 'deptName',
+      valueField: 'id',
     },
     required: true,
   },
@@ -98,7 +92,13 @@ export const formSchema: FormSchema[] = [
   {
     field: 'leaderStaff',
     label: '负责人',
-    component: 'Input',
+    component: 'ApiSelect',
+    componentProps: {
+      api: getStaffList,
+      labelField: 'deptName',
+      valueField: 'id',
+      showSearch: true,
+    },
   },
   {
     field: 'deptPhone',

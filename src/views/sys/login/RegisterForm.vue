@@ -1,52 +1,58 @@
 <template>
   <div v-if="getShow">
     <LoginFormTitle class="enter-x" />
-    <Form class="p-4 enter-x" :model="formData" :rules="getFormRules" ref="formRef">
-      <FormItem name="account" class="enter-x">
-        <Input
-          class="fix-auto-fill"
-          size="large"
-          v-model:value="formData.account"
-          :placeholder="t('sys.login.userName')"
-        />
-      </FormItem>
-      <FormItem name="mobile" class="enter-x">
+    <Form class="p-4 enter-x" :model="formData" :rules="rules" ref="formRef">
+      <FormItem name="phone" class="enter-x">
         <Input
           size="large"
-          v-model:value="formData.mobile"
+          v-model:value="formData.phone"
           :placeholder="t('sys.login.mobile')"
           class="fix-auto-fill"
         />
       </FormItem>
-      <FormItem name="sms" class="enter-x">
-        <CountdownInput
-          size="large"
+      <FormItem name="idCard" class="enter-x">
+        <Input
           class="fix-auto-fill"
-          v-model:value="formData.sms"
-          :placeholder="t('sys.login.smsCode')"
-        />
-      </FormItem>
-      <FormItem name="password" class="enter-x">
-        <StrengthMeter
           size="large"
-          v-model:value="formData.password"
-          :placeholder="t('sys.login.password')"
+          v-model:value="formData.idCard"
+          :placeholder="'身份证'"
         />
       </FormItem>
-      <FormItem name="confirmPassword" class="enter-x">
-        <InputPassword
+      <FormItem name="bankCard" class="enter-x">
+        <Input
+          class="fix-auto-fill"
           size="large"
-          visibilityToggle
-          v-model:value="formData.confirmPassword"
-          :placeholder="t('sys.login.confirmPassword')"
+          v-model:value="formData.bankCard"
+          :placeholder="'工资卡'"
         />
       </FormItem>
-
-      <FormItem class="enter-x" name="policy">
-        <!-- No logic, you need to deal with it yourself -->
-        <Checkbox v-model:checked="formData.policy" size="small">
-          {{ t('sys.login.policy') }}
-        </Checkbox>
+      <FormItem name="sex" class="enter-x">
+        <RadioGroup
+          size="large"
+          v-model:value="formData.sex"
+          :placeholder="'性别'"
+          class="fix-auto-fill"
+          button-style="solid"
+        >
+          <RadioButton :value="false">男</RadioButton>
+          <RadioButton :value="true">女</RadioButton>
+        </RadioGroup>
+      </FormItem>
+      <FormItem name="email" class="enter-x">
+        <Input
+          class="fix-auto-fill"
+          size="large"
+          v-model:value="formData.email"
+          :placeholder="'邮箱'"
+        />
+      </FormItem>
+      <FormItem name="code" class="enter-x" v-show="false">
+        <Input
+          class="fix-auto-fill"
+          size="large"
+          v-model:value="formData.code"
+          :placeholder="'code'"
+        />
       </FormItem>
 
       <Button
@@ -59,46 +65,96 @@
       >
         {{ t('sys.login.registerButton') }}
       </Button>
-      <Button size="large" block class="mt-4 enter-x" @click="handleBackLogin">
-        {{ t('sys.login.backSignIn') }}
-      </Button>
     </Form>
   </div>
 </template>
 <script lang="ts" setup>
-  import { reactive, ref, unref, computed } from 'vue';
+  import { reactive, ref, unref, computed, nextTick } from 'vue';
   import LoginFormTitle from './LoginFormTitle.vue';
-  import { Form, Input, Button, Checkbox } from 'ant-design-vue';
-  import { StrengthMeter } from '@/components/StrengthMeter';
-  import { CountdownInput } from '@/components/CountDown';
+  import { Form, Input, Button, RadioGroup, RadioButton } from 'ant-design-vue';
   import { useI18n } from '@/hooks/web/useI18n';
-  import { useLoginState, useFormRules, useFormValid, LoginStateEnum } from './useLogin';
+  import { useLoginState, LoginStateEnum } from './useLogin';
+  import { Rule } from 'ant-design-vue/es/form';
+  import { useMessage } from '@/hooks/web/useMessage';
+  import { useDesign } from '@/hooks/web/useDesign';
+  import { useUserStore } from '@/store/modules/user';
 
+  const { notification, createErrorModal } = useMessage();
+  const { prefixCls } = useDesign('login');
+  const userStore = useUserStore();
   const FormItem = Form.Item;
-  const InputPassword = Input.Password;
   const { t } = useI18n();
-  const { handleBackLogin, getLoginState } = useLoginState();
+  const { getLoginState } = useLoginState();
 
   const formRef = ref();
   const loading = ref(false);
 
   const formData = reactive({
-    account: '',
-    password: '',
-    confirmPassword: '',
-    mobile: '',
-    sms: '',
-    policy: false,
+    phone: '',
+    idCard: '',
+    bankCard: '',
+    email: '',
+    code: '',
+    sex: false,
   });
 
-  const { getFormRules } = useFormRules(formData);
-  const { validForm } = useFormValid(formRef);
+  const rules: Record<string, Rule[]> = {
+    phone: [
+      { required: true, message: '请输入手机号', trigger: 'change' },
+      { min: 11, max: 11, message: '请输入11位手机号', trigger: 'blur' },
+    ],
+    idCard: [{ required: true, message: '请输入身份证', trigger: 'change' }],
+  };
 
   const getShow = computed(() => unref(getLoginState) === LoginStateEnum.REGISTER);
 
+  /**
+   * 截取需要的字符串
+   * @param name
+   * @constructor
+   */
+  function GetQueryString(name: string) {
+    const reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+    let r = window.location.search.substr(1).match(reg); //获取url中"?"符后的字符串并正则匹配
+    let context = '';
+    if (r != null) context = r[2];
+    r = null;
+    return context == null || context == '' || context == 'undefined' ? '' : context;
+  }
+
+  nextTick(async () => {
+    formData.code = GetQueryString('code');
+  });
+
   async function handleRegister() {
-    const data = await validForm();
-    if (!data) return;
-    console.log(data);
+    formRef.value.validate().then(async () => {
+      try {
+        loading.value = true;
+        const userInfo = await userStore.wxCpStaffRegister({
+          phone: formData.phone,
+          idCard: formData.idCard,
+          bankCard: formData.bankCard,
+          email: formData.email,
+          code: formData.code,
+          sex: formData.sex,
+          mode: 'none', //不要默认的错误提示
+        });
+        if (userInfo) {
+          notification.success({
+            message: t('sys.login.loginSuccessTitle'),
+            description: `${t('sys.login.loginSuccessDesc')}: ${userInfo.realName}`,
+            duration: 3,
+          });
+        }
+      } catch (error) {
+        createErrorModal({
+          title: t('sys.api.errorTip'),
+          content: (error as unknown as Error).message || t('sys.api.networkExceptionMsg'),
+          getContainer: () => document.body.querySelector(`.${prefixCls}`) || document.body,
+        });
+      } finally {
+        loading.value = false;
+      }
+    });
   }
 </script>

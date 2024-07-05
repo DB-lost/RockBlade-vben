@@ -2,6 +2,10 @@
   <div v-show="getShow">
     <LoginFormTitle class="enter-x" />
     <div id="ww_login"></div>
+    <Divider class="enter-x">{{ t('sys.login.scanSign') }}</Divider>
+    <Button size="large" block class="mt-4 enter-x" @click="handleBackLogin">
+      {{ t('sys.login.backSignIn') }}
+    </Button>
   </div>
 </template>
 <script lang="ts" setup>
@@ -15,9 +19,10 @@
   import { useUserStore } from '@/store/modules/user';
   import { useMessage } from '@/hooks/web/useMessage';
   import { useDesign } from '@/hooks/web/useDesign';
+  import { Button, Divider } from 'ant-design-vue';
 
   const { t } = useI18n();
-  const { getLoginState } = useLoginState();
+  const { getLoginState, handleBackLogin } = useLoginState();
 
   const getShow = computed(() => unref(getLoginState) === LoginStateEnum.WX_CP_LOGIN);
   const loading = ref(false);

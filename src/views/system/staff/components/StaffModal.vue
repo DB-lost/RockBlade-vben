@@ -9,7 +9,7 @@
   import { BasicForm, useForm } from '@/components/Form';
   import { getDeptTreeList } from '@/api/system/dept';
   import { useMessage } from '@/hooks/web/useMessage';
-  import { insertStaff, updateStaff } from '@/api/system/staff';
+  import { getStaffInfo, insertStaff, updateStaff } from '@/api/system/staff';
   import { staffFormSchema } from '@/views/system/staff/staff_data';
   import { RSA256Encrypt } from '@/utils/jesncryptKey';
 
@@ -34,14 +34,14 @@
     await resetFields();
     setModalProps({ confirmLoading: false });
     isUpdate.value = !!data?.isUpdate;
-
     if (unref(isUpdate)) {
-      rowId.value = data.record.id;
-      await setFieldsValue({
-        ...data.record,
+      //获取员工信息
+      getStaffInfo(data.record.id).then(async (res) => {
+        await setFieldsValue({
+          ...res,
+        });
       });
     }
-
     const treeData = await getDeptTreeList();
     await updateSchema([
       {

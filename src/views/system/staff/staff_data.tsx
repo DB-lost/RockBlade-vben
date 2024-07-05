@@ -144,6 +144,17 @@ export const staffFormSchema: FormSchema[] = [
     required: true,
   },
   {
+    field: 'idCard',
+    label: '身份证',
+    component: 'Input',
+    required: true,
+  },
+  {
+    field: 'bankCard',
+    label: '银行卡',
+    component: 'Input',
+  },
+  {
     field: 'nickname',
     label: '昵称',
     component: 'Input',
@@ -181,6 +192,12 @@ export const staffFormSchema: FormSchema[] = [
     label: '备注',
     field: 'remark',
     component: 'InputTextArea',
+  },
+  {
+    label: '企业微信用户id',
+    field: 'wxCpUserid',
+    component: 'Input',
+    show: false,
   },
 ];
 

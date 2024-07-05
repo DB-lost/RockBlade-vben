@@ -24,6 +24,7 @@
         :placeholder="t('sys.login.password')"
       />
     </FormItem>
+    <!--
     <Row class="enter-x">
       <Col :span="12" />
       <Col :span="12">
@@ -34,7 +35,6 @@
         </FormItem>
       </Col>
     </Row>
-    <!--
       <ACol :span="12">
         <FormItem>
           &lt;!&ndash; No logic, you need to deal with it yourself &ndash;&gt;

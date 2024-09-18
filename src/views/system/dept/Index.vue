@@ -9,7 +9,7 @@
         >
           新增部门
         </Button>
-        <Button type="primary" danger @click="handleSyncWxCp" v-if="hasPermission(['*'])">
+        <Button type="primary" danger @click="handleSyncWxCp" v-if="haveWxCp()">
           同步企业微信
         </Button>
       </template>
@@ -49,6 +49,7 @@
   import { useMessage } from '@/hooks/web/useMessage';
   import { usePermission } from '@/hooks/web/usePermission';
   import { Button } from 'ant-design-vue';
+  import { useUserStore } from '@/store/modules/user';
 
   defineOptions({ name: 'Dept' });
 
@@ -80,6 +81,12 @@
       fixed: undefined,
     },
   });
+
+  const userStore = useUserStore();
+
+  function haveWxCp(): boolean {
+    return userStore.getUserInfo?.haveWxCp;
+  }
 
   function handleCreate() {
     openModal(true, {

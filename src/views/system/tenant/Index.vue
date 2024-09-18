@@ -1,8 +1,8 @@
 <template>
   <div>
-    <BasicTable @register="registerTable" v-if="hasPermission(['*', 'system.role.list'])">
+    <BasicTable @register="registerTable" v-if="hasPermission(['*', 'system.tenant.list'])">
       <template #toolbar>
-        <a-button type="primary" @click="handleCreate"> 新增角色 </a-button>
+        <a-button type="primary" @click="handleCreate"> 新增租户</a-button>
       </template>
       <template #bodyCell="{ column, record }">
         <template v-if="column.key === 'action'">
@@ -20,28 +20,25 @@
                   placement: 'left',
                   confirm: handleDelete.bind(null, record),
                 },
-                ifShow: () => {
-                  return record.id !== '100';
-                },
               },
             ]"
           />
         </template>
       </template>
     </BasicTable>
-    <RoleDrawer @register="registerDrawer" @success="handleSuccess" />
+    <TenantDrawer @register="registerDrawer" @success="handleSuccess" />
   </div>
 </template>
 <script lang="ts" setup>
   import { BasicTable, useTable, TableAction } from '@/components/Table';
   import { usePermission } from '@/hooks/web/usePermission';
   import { useDrawer } from '@/components/Drawer';
-  import RoleDrawer from './components/RoleDrawer.vue';
-  import { columns, searchFormSchema } from './role_data';
-  import { getRolePage, removeRoleById } from '@/api/system/role';
+  import TenantDrawer from './components/TenantDrawer.vue';
+  import { columns, searchFormSchema } from './tenant_data';
+  import { getTenantPage, removeTenantById } from '@/api/system/tenant';
   import { useMessage } from '@/hooks/web/useMessage';
 
-  defineOptions({ name: 'Role' });
+  defineOptions({ name: 'Tenant' });
 
   /**
    * 权限控制
@@ -49,8 +46,8 @@
   const { hasPermission } = usePermission();
   const [registerDrawer, { openDrawer }] = useDrawer();
   const [registerTable, { reload }] = useTable({
-    title: '角色列表',
-    api: getRolePage,
+    title: '租户列表',
+    api: getTenantPage,
     columns,
     formConfig: {
       labelWidth: 120,
@@ -86,8 +83,8 @@
   const { createMessage } = useMessage();
 
   function handleDelete(record: Recordable) {
-    removeRoleById(record.id).then(() => {
-      createMessage.success('删除角色成功!');
+    removeTenantById(record.id).then(() => {
+      createMessage.success('删除租户成功!');
       reload();
     });
   }

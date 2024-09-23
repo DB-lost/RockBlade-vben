@@ -53,7 +53,7 @@ function createRequestClient(baseURL: string) {
   }
 
   function formatToken(token: null | string) {
-    return token ? `Bearer ${token}` : null;
+    return token ? `${token}` : null;
   }
 
   // 请求头处理
@@ -72,11 +72,20 @@ function createRequestClient(baseURL: string) {
     fulfilled: (response) => {
       const { data: responseData, status } = response;
 
-      const { code, data, message: msg } = responseData;
-      if (status >= 200 && status < 400 && code === 0) {
-        return data;
+      const { code, msg, result } = responseData;
+      if (status >= 200 && status < 400 && code === 200) {
+        return result;
       }
-      throw new Error(`Error ${status}: ${msg}`);
+      if (code >= 11_011 && code <= 11_016) {
+        const authStore = useAuthStore();
+        authStore.logout();
+      }
+      if (code === 500) {
+        message.error(msg);
+      } else {
+        // throw new Error(`${code}: ${msg}`);
+        throw new Error(`${msg}`);
+      }
     },
   });
 

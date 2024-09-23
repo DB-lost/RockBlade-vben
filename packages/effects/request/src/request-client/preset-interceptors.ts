@@ -119,6 +119,7 @@ export const errorMessageResponseInterceptor = (
           errorMessage = $t('fallback.http.internalServerError');
         }
       }
+
       makeErrorMessage?.(errorMessage, error);
       return Promise.reject(error);
     },
